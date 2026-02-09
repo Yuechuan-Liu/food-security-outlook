@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Food Security Outlook 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        
+        /* 全局小地球光标 */
+        html, body, *, *::before, *::after, a, button, input, select, textarea { 
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🗺️</text></svg>") 16 16, auto !important;
+        }
+
+        body { 
+            background-color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+        }
+        .hero-bg { background: radial-gradient(circle at 70% 50%, #1e3a8a 0%, #020617 100%); min-height: 780px; }
+        
+        .search-container { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
+        .search-container:focus-within { border-color: #fca311; background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 15px rgba(252, 163, 17, 0.3); }
+        
+        #searchResultList {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-top: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .search-item { padding: 10px 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: white; }
+        .search-item:hover { background: rgba(252, 163, 17, 0.2); color: #fca311; }
+        .data-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+        .has-data { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .no-data { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+
+        .fancy-title { 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic;
+            background: linear-gradient(to bottom, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .map-legend-inner { 
+            position: absolute;
+            bottom: 50px; left: 40px;
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 0.85rem; border-radius: 1rem; width: 170px; z-index: 50;
+        }
+
+        .scroll-style::-webkit-scrollbar { width: 4px; height: 6px; }
+        .scroll-style::-webkit-scrollbar-track { background: #f1f5f9; }
+        .scroll-style::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .news-item { border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease; }
+        .news-item:hover { background-color: #f8fafc; transform: translateX(4px); }
+        .tag-economic { background: #dbeafe; color: #1e40af; }
+        .tag-climate { background: #dcfce7; color: #166534; }
+        .tag-conflict { background: #fee2e2; color: #991b1b; }
+
+        #driverCarousel { height: 260px; overflow: hidden; position: relative; cursor: pointer; }
+        .driver-list { position: absolute; width: 100%; top: 0; left: 0; }
+        .driver-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; width: 100%; }
+        .mini-chart { width: 100px; height: 65px; flex-shrink: 0; }
+
+        /* 页面切换逻辑 CSS */
+        .page-content { display: none; }
+        .active-page { display: block; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#020617] text-white px-10 py-5 flex justify-between items-center border-b border-white/10 sticky top-0 z-50">
+        <div class="flex items-center space-x-4" onclick="showPage('home')" style="cursor: pointer;">
+            <div class="w-14 h-14 border-2 border-yellow-500 rounded-full flex items-center justify-center font-bold text-yellow-500">FOOD</div>
+            <div>
+                <h1 class="text-xl font-bold tracking-tighter uppercase">World Food Security</h1>
+                <p class="text-[10px] text-blue-400 tracking-[0.3em] uppercase">Forecast Cycle 2026</p>
+            </div>
+        </div>
+        <nav class="hidden lg:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-gray-400">
+            <a href="javascript:void(0)" onclick="showPage('methodology')" class="hover:text-yellow-500 transition">AWLM Methodology</a>
+            <a href="javascript:void(0)" onclick="showPage('strategy')" class="hover:text-yellow-500 transition">Global Strategy</a>
+            <a href="javascript:void(0)" onclick="showPage('database')" class="hover:text-yellow-500 transition">Database</a>
+        </nav>
+        <button class="bg-yellow-500 text-black px-6 py-2 rounded font-black text-xs uppercase shadow-xl hover:bg-yellow-400 transition">Research Report upload </button>
+    </header>
+
+    <div id="home-page" class="page-content active-page">
+        <section class="hero-bg relative text-white px-10 py-10 overflow-hidden">
+            <div class="max-w-[1650px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+                <div class="lg:col-span-4 flex flex-col justify-center pr-8">
+                    <span class="text-xs font-black text-blue-500 tracking-[0.4em] uppercase mb-4 tracking-widest">Scientific Framework</span>
+                    <h2 class="fancy-title text-4xl xl:text-5xl font-bold mb-6 leading-tight">
+                        Global Food Inflation:<br>Bi-Monthly Early Warning & Near-Term Forecast
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-10">
+                        The <b>AWLM (Adaptive Wavelet-Linear MixNet)</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 88 nations, identifying anomalies <b>2 months</b> in advance.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button class="bg-yellow-500 text-black px-8 py-3 rounded font-bold text-xs uppercase tracking-widest shadow-2xl hover:bg-yellow-400 transition">Documentation</button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 relative">
+                    <div class="absolute top-0 right-0 z-30 flex items-center space-x-3">
+                        <div class="relative w-64">
+                            <div class="search-container flex items-center px-5 py-2.5 rounded-full backdrop-blur-md">
+                                <i class="fas fa-search text-gray-400 text-xs mr-3"></i>
+                                <input type="text" id="countrySearch" placeholder="Search Target Nation..." class="bg-transparent text-[10px] outline-none text-white w-full font-semibold" autocomplete="off">
+                            </div>
+                            <div id="searchResultList" class="scroll-style shadow-2xl"></div>
+                        </div>
+                    </div>
+                    <div id="awlmMap" class="w-full h-[680px]"></div>
+                    <div class="map-legend-inner shadow-2xl border border-white/10">
+                        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">AWLM Inflation Index</p>
+                        <div class="flex flex-col space-y-2.5">
+                            <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #60a5fa, #1e40af, #f97316, #dc2626);"></div>
+                            <div class="flex justify-between text-[8px] font-black text-gray-300 uppercase tracking-tighter">
+                                <span>Stable</span><span>Extreme Risk</span>
+                            </div>
+                            <div class="pt-2 border-t border-white/10 flex items-center space-x-2 text-[9px] text-gray-500 font-medium">
+                                <span class="w-2.5 h-2.5 bg-white/10 rounded"></span> <span>General Area</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="max-w-[1600px] mx-auto px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 -mt-28 relative z-20">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100">
+                <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4">Emerging Markets Trends</h4>
+                <div id="trendChart" class="h-[250px]"></div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100">
+                <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4">Regional Analysis: Key Drivers</h4>
+                <div id="driverCarousel">
+                    <div class="driver-list" id="carouselList"></div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col h-[460px]">
+                <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4 flex justify-between items-center">
+                    Official Resources <span class="bg-red-100 text-red-600 text-[8px] px-2 py-0.5 rounded-full animate-pulse">LIVE DATA</span>
+                </h4>
+                <div class="overflow-y-auto scroll-style flex-1 pr-2">
+                    <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1"><span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-economic">Economic</span><span class="text-[7px] text-gray-400">JAN 15, 2026</span></div>
+                            <a href="https://desapublications.un.org/publications/world-economic-situation-and-prospects-2026" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">UN DESA: World Economic Situation 2026 Report</a>
+                        </div>
+                    </div>
+                    <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-conflict">Real-time</span>
+                            <span class="text-[7px] text-gray-400">LIVE MONITOR</span>
+                        </div>
+                        <a href="https://hungermap.wfp.org/" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">WFP: Global Hunger Crisis Risk Monitoring Map</a>
+                    </div>
+                 </div>
+                            <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-economic">Policy</span>
+                                <span class="text-[7px] text-gray-400">IMF BLOG</span>
+                            </div>
+                            <a href="https://www.imf.org/en/Blogs/Articles/2026/01/20/global-economy-navigates-a-narrow-path-to-resilience" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">IMF: Resilience in the Global Economy 2026</a>
+                        </div>
+                    </div>
+
+                    <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-climate">Trade</span>
+                                <span class="text-[7px] text-gray-400">MONTHLY UPDATES</span>
+                            </div>
+                            <a href="https://www.worldbank.org/en/topic/agriculture/brief/food-security-update" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">World Bank: Food Security Update & Commodity Prices</a>
+                        </div>
+                    </div>
+
+                    <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-economic">Index</span>
+                                <span class="text-[7px] text-gray-400">FAO STAT</span>
+                            </div>
+                            <a href="https://www.fao.org/worldfoodsituation/foodpricesindex/en/" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">FAO: World Food Price Index (Monthly Time-Series)</a>
+                        </div>
+                    </div>
+
+                    <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
+                        <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=120&h=120&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-climate">Satellite</span>
+                                <span class="text-[7px] text-gray-400">GEO DATA</span>
+                            </div>
+                            <a href="https://cropmonitor.org/" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">GEOGLAM: Global Agricultural Monitoring Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="methodology-page" class="page-content hero-bg px-10 py-16 text-white">
+        <div class="max-w-[1200px] mx-auto">
+            <h2 class="fancy-title text-5xl font-black mb-12">AWLM: Adaptive Wavelet-Linear MixNet</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
+                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">01. Wavelet Decomposition</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">Complex non-stationary inflation time series are decomposed via Discrete Wavelet Transform (DWT) into High-frequency Noise and Low-frequency Trend components.</p>
+                </div>
+                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
+                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">02. DLinear Parallel Module</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">Utilizing a DLinear architecture to capture long-term sequence trends directly through single-layer linear networks, significantly reducing computational overhead compared to Transformers.</p>
+                </div>
+                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl md:col-span-2">
+                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">Architecture Flowchart</h3>
+                    <div class="h-[300px] w-full bg-blue-900/20 rounded-2xl flex items-center justify-center border border-white/5 mt-4">
+                        <span class="text-gray-500 italic uppercase tracking-widest text-xs">Technical Pipeline: Input Data -> DWT -> DLinear Projection -> Fusion Output</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="strategy-page" class="page-content bg-slate-50 min-h-screen px-10 py-16">
+        <div class="max-w-[1400px] mx-auto">
+            <h2 class="text-blue-950 text-4xl font-black mb-8 border-l-8 border-yellow-500 pl-6 uppercase">Regional Strategic Reports</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <script>
+                    const nations = ["China", "Russia", "Brazil", "India", "Nigeria", "Argentina", "Japan", "Germany", "France", "Australia"];
+                    nations.forEach(n => {
+                        document.write(`
+                            <div id="strategy-${n}" class="bg-white p-6 rounded-3xl shadow-xl hover:shadow-2xl transition border-2 border-transparent hover:border-yellow-500">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase">${n} Report</span>
+                                    <span class="text-[10px] text-gray-400 italic">Cycle: 2026.Q1</span>
+                                </div>
+                                <h4 class="text-lg font-black text-blue-950 mb-3 underline decoration-yellow-500 underline-offset-4">${n} Risk Mitigation Plan</h4>
+                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on AWLM projections, inflation in ${n} is driven by a correlation between Precipitation anomalies and Exchange Rate volatility.</p>
+                                <button class="w-full bg-blue-950 text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-yellow-400 hover:text-black transition">Download Analysis</button>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div id="database-page" class="page-content bg-white min-h-screen">
+        <div class="bg-blue-950 text-white px-10 py-12">
+            <h2 class="text-3xl font-black uppercase tracking-tighter">Raw Data Terminal</h2>
+            <p class="text-blue-400 text-xs mt-2 uppercase tracking-widest">Access 88 Nations Historical & Forecast datasets</p>
+        </div>
+        <div class="px-10 py-12">
+            <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-2xl">
+                <table class="w-full text-left text-xs text-gray-600">
+                    <thead class="bg-slate-50 text-blue-900 uppercase font-black">
+                        <tr>
+                            <th class="p-5">Nation ID</th>
+                            <th class="p-5">Indicator</th>
+                            <th class="p-5">Jan Forecast</th>
+                            <th class="p-5">Feb Forecast</th>
+                            <th class="p-5">Confidence Interval</th>
+                            <th class="p-5">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        <script>
+                            for(let i=0; i<15; i++) {
+                                document.write(`
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="p-5 font-bold text-blue-950">NAT-${1000+i}</td>
+                                        <td class="p-5">Core Food Inflation (AWLM-V2)</td>
+                                        <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
+                                        <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
+                                        <td class="p-5"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">± 1.25%</span></td>
+                                        <td class="p-5"><button class="text-blue-600 font-black hover:underline uppercase">Export CSV</button></td>
+                                    </tr>
+                                `);
+                            }
+                        </script>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // 页面切换核心脚本
+    function showPage(pageId) {
+        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+        const target = document.getElementById(pageId + '-page');
+        if(target) target.classList.add('active-page');
+        window.scrollTo(0, 0);
+        if(pageId === 'home') {
+            setTimeout(() => { if(mapChart) mapChart.resize(); }, 10);
+        }
+    }
+    
+    // 跳转至 Strategy 页面并高亮
+    function jumpToStrategy(countryName) {
+        showPage('strategy');
+        setTimeout(() => {
+            const element = document.getElementById('strategy-' + countryName);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.borderColor = "#fca311";
+                element.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.25)";
+                setTimeout(() => {
+                    element.style.borderColor = "transparent";
+                    element.style.boxShadow = "";
+                }, 2000);
+            }
+        }, 300);
+    }
+
+    // 跳转至 Database 页面并高亮
+    function jumpToDatabase(countryName) {
+        showPage('database');
+        setTimeout(() => {
+            const element = document.getElementById('db-' + countryName);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 边框高亮颜色与 hover 一致
+                element.style.borderColor = "#fca311";
+                element.style.borderWidth = "2px";
+                setTimeout(() => {
+                    element.style.borderColor = "transparent";
+                }, 2000);
+            }
+        }, 300);
+    }
+
+    const dataNations = [
+        "China", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
+        "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
+        "Bhutan", "Bolivia", "Bosnia and Herz.", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cape Verde",
+        "Cambodia", "Cameroon", "Canada", "Central African Rep.", "Chad", "Chile", "Colombia", "Comoros", "Congo", "Dem. Rep. Congo",
+        "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Rep.", "Denmark", "Djibouti", "Dominica", "Dominican Rep.", "Ecuador",
+        "Egypt", "El Salvador", "Eq. Guinea", "Eritrea", "Estonia", "Swaziland", "Ethiopia", "Fiji", "Finland", "France",
+        "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
+        "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland",
+        "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati","Russia"
+    ];
+
+    const allWorldCountries = ["Somalia", "Afghanistan", "South Sudan", "Zimbabwe", "Nigeria", "Venezuela", "Argentina", "China", "United States", "India", "Brazil", "Russia", "Germany", "Japan", "France", "United Kingdom", "Italy", "Canada", "Australia", "Mexico", "South Korea", "Turkey", "Spain", "Saudi Arabia", "Indonesia", "Netherlands", "Switzerland", "Poland", "Belgium", "Sweden", "Norway", "Austria", "Thailand", "Egypt", "Israel", "Vietnam", "Pakistan", "Chile", "Philippines", "South Africa", "Malaysia", "Colombia", "Singapore", "Ireland", "Portugal", "Ukraine", "Bangladesh", "Greece", "Hungary", "New Zealand", "Iraq", "Algeria", "Kazakhstan", "Finland", "Peru", "Qatar", "Czech Republic", "Romania", "Morocco", "Kuwait", "Angola", "Slovakia", "Croatia", "Ecuador", "Oman", "Bulgaria", "Kenya", "Guatemala", "Belarus", "Uzbekistan", "Ethiopia", "Luxembourg", "Sri Lanka", "Myanmar", "Dominican Republic", "Ghana", "Tanzania", "Lebanon", "Slovenia", "Azerbaijan", "Jordan", "Ivory Coast", "Costa Rica", "Lithuania", "Serbia", "Sudan", "Paraguay", "Uruguay", "Libya", "Cameroon", "Bolivia", "Uganda", "Latvia", "Bahrain", "Estonia", "Nepal", "Georgia", "Honduras", "Senegal", "El Salvador", "Zambia", "Cambodia", "Cyprus", "Iceland", "Bosnia and Herzegovina", "Trinidad and Tobago", "Armenia", "Burkina Faso", "Mali", "Albania", "Laos", "Gabon", "Madagascar", "Mozambique", "Botswana", "Mongolia", "Jamaica", "Benin", "Nicaragua", "Guinea", "Haiti", "Moldova", "Rwanda", "Malta", "Chad", "Niger", "Tajikistan", "Malawi", "Bahamas", "Kyrgyzstan", "Eritrea", "Togo", "Mauritania", "Fiji", "Suriname", "Burundi", "Maldives", "Bhutan", "Guyana", "Barbados", "Djibouti", "Belize", "Solomon Islands", "Gambia", "Cape Verde", "Liberia", "Saint Lucia", "Grenada"];
+    const factorLabels = ['GDP', 'Fatalities', 'Precipitation', 'C-cifvalue', 'Exchange Rate', 'Population', 'NDVI Ratio', 'Disaster Affected'];
+
+    let mapChart;
+    document.addEventListener('DOMContentLoaded', function() {
+        mapChart = echarts.init(document.getElementById('awlmMap'));
+        
+        // 1. 地图初始化
+        mapChart.setOption({
+            tooltip: { 
+                trigger: 'item', 
+                formatter: (params) => {
+                    if (isNaN(params.value)) return `<div style="padding:4px">${params.name}: No Data</div>`;
+                    return `
+                        <div style="padding:4px; line-height:1.5;">
+                            <div style="font-weight:900; color:#fca311; margin-bottom:2px; text-transform:uppercase;">${params.name}</div>
+                            <div style="font-size:12px; font-weight:bold;">Food Inflation: ${params.value}%</div>
+                        </div>
+                    `;
+                },
+                backgroundColor: 'rgba(15, 23, 42, 0.95)', 
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                borderWidth: 1,
+                textStyle: { color: '#fff', fontSize: 12 },
+                extraCssText: 'backdrop-filter: blur(4px); border-radius: 8px;'
+            },
+            visualMap: { show: false, min: 0, max: 25, inRange: { color: ['#60a5fa', '#1e40af', '#f97316', '#dc2626'] } },
+            series: [{
+                type: 'map', map: 'world', roam: true, zoom: 1.2,
+                itemStyle: { areaColor: '#f1f5f9', borderColor: '#cbd5e1', borderWidth: 0.5 },
+                label: { show: false },
+                emphasis: { label: { show: false }, itemStyle: { areaColor: '#fca311' } },
+                select: { label: { show: false }, itemStyle: { areaColor: '#fca311' } },
+                data: dataNations.map(name => {
+                    let val = (Math.random() * 10 + 2).toFixed(1);
+                    return { name: name, value: val };
+                })
+            }]
+        });
+
+        mapChart.on('click', function (params) {
+            if (params.name) jumpToStrategy(params.name);
+        });
+
+        // 2. 点击非功能区恢复地图状态
+        window.addEventListener('click', function (e) {
+            const functionalZones = ['#awlmMap', '.search-container', '#searchResultList', 'nav', 'header', 'main', 'button'];
+            const isFunctional = functionalZones.some(selector => e.target.closest(selector));
+            if (!isFunctional && document.getElementById('home-page').classList.contains('active-page')) {
+                if (mapChart) {
+                    mapChart.setOption({ series: [{ zoom: 1.2, center: null }] });
+                }
+            }
+        });
+
+        // 3. 首页搜索框逻辑
+        const searchInput = document.getElementById('countrySearch');
+        const resultList = document.getElementById('searchResultList');
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            resultList.innerHTML = '';
+            if (query.length > 0) {
+                const filtered = allWorldCountries.filter(c => c.toLowerCase().includes(query));
+                if (filtered.length > 0) {
+                    resultList.style.display = 'block';
+                    filtered.forEach(country => {
+                        const isData = dataNations.includes(country);
+                        const item = document.createElement('div');
+                        item.className = 'search-item flex justify-between items-center';
+                        item.innerHTML = `<span>${country}</span><span class="data-tag ${isData ? 'has-data' : 'no-data'}">${isData ? 'Covered' : 'N/A'}</span>`;
+                        item.onclick = (e) => { 
+                            e.stopPropagation();
+                            searchInput.value = country; 
+                            resultList.style.display = 'none'; 
+                            jumpToStrategy(country);
+                        };
+                        resultList.appendChild(item);
+                    });
+                }
+            } else resultList.style.display = 'none';
+        });
+
+        // 4. Database 页面搜索框逻辑
+        const dbSearchInput = document.getElementById('dbSearchInput');
+        const dbResultList = document.getElementById('dbSearchResultList');
+        if(dbSearchInput) {
+            dbSearchInput.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                dbResultList.innerHTML = '';
+                if (query.length > 0) {
+                    const filtered = allWorldCountries.filter(c => c.toLowerCase().includes(query));
+                    filtered.forEach(country => {
+                        const item = document.createElement('div');
+                        item.className = 'search-item flex justify-between items-center';
+                        item.innerHTML = `<span>${country}</span>`;
+                        item.onclick = (e) => { 
+                            e.stopPropagation();
+                            dbSearchInput.value = country; 
+                            dbResultList.style.display = 'none'; 
+                            jumpToDatabase(country);
+                        };
+                        dbResultList.appendChild(item);
+                    });
+                    dbResultList.style.display = 'block';
+                } else dbResultList.style.display = 'none';
+            });
+        }
+
+        // 5. 首页自动滚动列表逻辑
+        const listContainer = document.getElementById('carouselList');
+        const nationsExtended = [...dataNations, ...dataNations]; 
+        nationsExtended.forEach((name, index) => {
+            const row = document.createElement('div');
+            row.className = 'driver-row';
+            const chartId = `miniChart_${index}`;
+            // 绑定点击跳转到 Database
+            row.innerHTML = `
+                <div id="${chartId}" class="mini-chart"></div>
+                <div class="flex-1 ml-4 pr-2 cursor-pointer" onclick="jumpToDatabase('${name}')">
+                    <p class="text-[10px] font-black text-blue-950 uppercase hover:text-yellow-600 transition">${name}</p>
+                    <p class="text-[9px] text-gray-500 leading-tight">Click to view raw dataset.</p>
+                </div>
+            `;
+            listContainer.appendChild(row);
+            setTimeout(() => {
+                const el = document.getElementById(chartId);
+                if(el) {
+                    const miniChart = echarts.init(el);
+                    miniChart.setOption({
+                        grid: { left: 30, right: 5, top: 5, bottom: 5 },
+                        xAxis: { show: false },
+                        yAxis: { type: 'category', data: ['H', 'M', 'L'], axisLabel: { fontSize: 7, fontWeight: 'bold' } },
+                        series: [{ type: 'bar', data: [Math.random()*100, Math.random()*80, Math.random()*60], color: '#1e3a8a', barWidth: '50%', itemStyle: { borderRadius: [0, 2, 2, 0] } }]
+                    });
+                }
+            }, 200);
+        });
+
+        // 自动滚动动画
+        let currentPos = 0;
+        let isHovered = false;
+        const carouselBox = document.getElementById('driverCarousel');
+        carouselBox.onmouseenter = () => isHovered = true;
+        carouselBox.onmouseleave = () => isHovered = false;
+        function scrollStep() {
+            const speed = isHovered ? 0.05 : 0.3;
+            currentPos -= speed;
+            if (Math.abs(currentPos) >= listContainer.offsetHeight / 2) currentPos = 0;
+            listContainer.style.transform = `translateY(${currentPos}px)`;
+            requestAnimationFrame(scrollStep);
+        }
+        requestAnimationFrame(scrollStep);
+
+        // 6. 趋势图初始化
+        const trendChart = echarts.init(document.getElementById('trendChart'));
+        trendChart.setOption({
+            xAxis: { type: 'category', data: ['Jan','Feb','Mar'], axisLabel: { fontWeight: 'bold' } },
+            yAxis: { type: 'value' },
+            series: [{ data: [12.5, 19.2, 14.8], type: 'line', smooth: true, color: '#fca311', lineStyle: { width: 4 } }]
+        });
+
+        window.onclick = (e) => { 
+            if (!e.target.closest('.relative')) {
+                if(resultList) resultList.style.display = 'none';
+                if(dbResultList) dbResultList.style.display = 'none';
+            }
+        };
+
+        window.addEventListener('resize', () => {
+            if(mapChart) mapChart.resize();
+            if(trendChart) trendChart.resize();
+        });
+    });
+</script>
+</body>
+</html>
