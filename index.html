@@ -93,7 +93,7 @@
             </div>
         </div>
         <nav class="hidden lg:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-gray-400">
-            <a href="javascript:void(0)" onclick="showPage('methodology')" class="hover:text-yellow-500 transition">AWLM Methodology</a>
+            <a href="javascript:void(0)" onclick="showPage('methodology')" class="hover:text-yellow-500 transition">Dual-branch Prediction Methodology</a>
             <a href="javascript:void(0)" onclick="showPage('strategy')" class="hover:text-yellow-500 transition">Global Strategy</a>
             <a href="javascript:void(0)" onclick="showPage('database')" class="hover:text-yellow-500 transition">Database</a>
         </nav>
@@ -109,7 +109,7 @@
                         Global Food Inflation:<br>Bi-Monthly Early Warning & Near-Term Forecast
                     </h2>
                     <p class="text-gray-400 text-sm leading-relaxed mb-10">
-                        The <b>AWLM (Adaptive Wavelet-Linear MixNet)</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 88 nations, identifying anomalies <b>2 months</b> in advance.
+                        The <b>Dual-branch Prediction Model</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 88 nations, identifying anomalies <b>2 months</b> in advance.
                     </p>
                     <div class="flex space-x-4">
                         <button class="bg-yellow-500 text-black px-8 py-3 rounded font-bold text-xs uppercase tracking-widest shadow-2xl hover:bg-yellow-400 transition">Documentation</button>
@@ -128,7 +128,7 @@
                     </div>
                     <div id="awlmMap" class="w-full h-[680px]"></div>
                     <div class="map-legend-inner shadow-2xl border border-white/10">
-                        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">AWLM Inflation Index</p>
+                        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Dual-branch Prediction Model Inflation Index</p>
                         <div class="flex flex-col space-y-2.5">
                             <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #60a5fa, #1e40af, #f97316, #dc2626);"></div>
                             <div class="flex justify-between text-[8px] font-black text-gray-300 uppercase tracking-tighter">
@@ -238,23 +238,44 @@
         </main>
     </div>
 
-    <div id="methodology-page" class="page-content hero-bg px-10 py-16 text-white">
+<div id="methodology-page" class="page-content hero-bg px-10 py-16 text-white">
         <div class="max-w-[1200px] mx-auto">
-            <h2 class="fancy-title text-5xl font-black mb-12">AWLM: Adaptive Wavelet-Linear MixNet</h2>
+            <h2 class="fancy-title text-5xl font-black mb-12">Dual-branch Prediction</h2>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
                     <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">01. Wavelet Decomposition</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">Complex non-stationary inflation time series are decomposed via Discrete Wavelet Transform (DWT) into High-frequency Noise and Low-frequency Trend components.</p>
                 </div>
+
                 <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
                     <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">02. DLinear Parallel Module</h3>
                     <p class="text-gray-400 leading-relaxed text-sm">Utilizing a DLinear architecture to capture long-term sequence trends directly through single-layer linear networks, significantly reducing computational overhead compared to Transformers.</p>
                 </div>
+
                 <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl md:col-span-2">
                     <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">Architecture Flowchart</h3>
                     <div class="h-[300px] w-full bg-blue-900/20 rounded-2xl flex items-center justify-center border border-white/5 mt-4">
                         <span class="text-gray-500 italic uppercase tracking-widest text-xs">Technical Pipeline: Input Data -> DWT -> DLinear Projection -> Fusion Output</span>
                     </div>
+                </div>
+
+                <div class="md:col-span-2 mt-8 bg-gradient-to-r from-yellow-500/20 to-transparent p-10 rounded-[3rem] border border-yellow-500/30 flex flex-col md:flex-row items-center justify-between backdrop-blur-md">
+                    <div class="mb-8 md:mb-0">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <i class="fab fa-python text-yellow-500 text-2xl"></i>
+                            <h3 class="text-white font-black text-2xl uppercase tracking-tighter">Model Source Code</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm max-w-xl">
+                            Download the core implementation of the <b>Dual-branch Prediction Model</b>. The package includes the Wavelet decomposition layers, DLinear trend modules, and the adaptive fusion weights script (PyTorch version).
+                        </p>
+                    </div>
+                    
+                    <a href="Dual-branch Prediction Model.py" download="Dual-branch Prediction Model.py" 
+                       class="group relative inline-flex items-center justify-center px-10 py-5 font-black text-black transition-all duration-200 bg-yellow-500 rounded-2xl hover:bg-yellow-400 shadow-[0_0_30px_rgba(252,163,17,0.4)]">
+                        <i class="fas fa-download mr-3 animate-bounce"></i>
+                        <span class="uppercase tracking-widest text-xs">Download .PY Script</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -274,7 +295,7 @@
                                     <span class="text-[10px] text-gray-400 italic">Cycle: 2026.Q1</span>
                                 </div>
                                 <h4 class="text-lg font-black text-blue-950 mb-3 underline decoration-yellow-500 underline-offset-4">${n} Risk Mitigation Plan</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on AWLM projections, inflation in ${n} is driven by a correlation between Precipitation anomalies and Exchange Rate volatility.</p>
+                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on Dual-branch Prediction Model projections, inflation in ${n} is driven by a correlation between Precipitation anomalies and Exchange Rate volatility.</p>
                                 <button class="w-full bg-blue-950 text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-yellow-400 hover:text-black transition">Download Analysis</button>
                             </div>
                         `);
@@ -287,7 +308,7 @@
     <div id="database-page" class="page-content bg-white min-h-screen">
         <div class="bg-blue-950 text-white px-10 py-12">
             <h2 class="text-3xl font-black uppercase tracking-tighter">Raw Data Terminal</h2>
-            <p class="text-blue-400 text-xs mt-2 uppercase tracking-widest">Access 88 Nations Historical & Forecast datasets</p>
+            <p class="text-blue-400 text-xs mt-2 uppercase tracking-widest">Access 93 Nations Historical & Forecast datasets</p>
         </div>
         <div class="px-10 py-12">
             <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-2xl">
@@ -308,7 +329,7 @@
                                 document.write(`
                                     <tr class="hover:bg-slate-50 transition">
                                         <td class="p-5 font-bold text-blue-950">NAT-${1000+i}</td>
-                                        <td class="p-5">Core Food Inflation (AWLM-V2)</td>
+                                        <td class="p-5">Core Food Inflation (Dual-branch Prediction Model)</td>
                                         <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
                                         <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
                                         <td class="p-5"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">± 1.25%</span></td>
@@ -370,18 +391,19 @@
     }
 
     const dataNations = [
-        "China", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
-        "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
-        "Bhutan", "Bolivia", "Bosnia and Herz.", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cape Verde",
-        "Cambodia", "Cameroon", "Canada", "Central African Rep.", "Chad", "Chile", "Colombia", "Comoros", "Congo", "Dem. Rep. Congo",
-        "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Rep.", "Denmark", "Djibouti", "Dominica", "Dominican Rep.", "Ecuador",
-        "Egypt", "El Salvador", "Eq. Guinea", "Eritrea", "Estonia", "Swaziland", "Ethiopia", "Fiji", "Finland", "France",
-        "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
-        "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland",
-        "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati","Russia"
+        "Afghanistan", "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
+        "Brazil", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Chad", "Chile", "China",
+        "Colombia", "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Djibouti", "Dominican Republic", "Ecuador", "El Salvador", "Ethiopia",
+        "Fiji", "Georgia", "Germany", "Ghana", "Guatemala", "Guinea", "Guyana", "Honduras", "India", "Iraq",
+        "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Laos",
+        "Latvia", "Lebanon", "Lithuania", "Luxembourg", "Malawi", "Malaysia", "Mali", "Mauritania", "Mauritius", "Mexico",
+        "Moldova", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "New Zealand", "Nicaragua",
+        "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Panama", "Paraguay", "Peru", "Philippines",
+        "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saudi Arabia", "Senegal", "Serbia", "Sierra Leone",
+        "Singapore", "Slovakia", "Slovenia","United States"
     ];
 
-    const allWorldCountries = ["Somalia", "Afghanistan", "South Sudan", "Zimbabwe", "Nigeria", "Venezuela", "Argentina", "China", "United States", "India", "Brazil", "Russia", "Germany", "Japan", "France", "United Kingdom", "Italy", "Canada", "Australia", "Mexico", "South Korea", "Turkey", "Spain", "Saudi Arabia", "Indonesia", "Netherlands", "Switzerland", "Poland", "Belgium", "Sweden", "Norway", "Austria", "Thailand", "Egypt", "Israel", "Vietnam", "Pakistan", "Chile", "Philippines", "South Africa", "Malaysia", "Colombia", "Singapore", "Ireland", "Portugal", "Ukraine", "Bangladesh", "Greece", "Hungary", "New Zealand", "Iraq", "Algeria", "Kazakhstan", "Finland", "Peru", "Qatar", "Czech Republic", "Romania", "Morocco", "Kuwait", "Angola", "Slovakia", "Croatia", "Ecuador", "Oman", "Bulgaria", "Kenya", "Guatemala", "Belarus", "Uzbekistan", "Ethiopia", "Luxembourg", "Sri Lanka", "Myanmar", "Dominican Republic", "Ghana", "Tanzania", "Lebanon", "Slovenia", "Azerbaijan", "Jordan", "Ivory Coast", "Costa Rica", "Lithuania", "Serbia", "Sudan", "Paraguay", "Uruguay", "Libya", "Cameroon", "Bolivia", "Uganda", "Latvia", "Bahrain", "Estonia", "Nepal", "Georgia", "Honduras", "Senegal", "El Salvador", "Zambia", "Cambodia", "Cyprus", "Iceland", "Bosnia and Herzegovina", "Trinidad and Tobago", "Armenia", "Burkina Faso", "Mali", "Albania", "Laos", "Gabon", "Madagascar", "Mozambique", "Botswana", "Mongolia", "Jamaica", "Benin", "Nicaragua", "Guinea", "Haiti", "Moldova", "Rwanda", "Malta", "Chad", "Niger", "Tajikistan", "Malawi", "Bahamas", "Kyrgyzstan", "Eritrea", "Togo", "Mauritania", "Fiji", "Suriname", "Burundi", "Maldives", "Bhutan", "Guyana", "Barbados", "Djibouti", "Belize", "Solomon Islands", "Gambia", "Cape Verde", "Liberia", "Saint Lucia", "Grenada"];
+    const allWorldCountries = [...dataNations];
     const factorLabels = ['GDP', 'Fatalities', 'Precipitation', 'C-cifvalue', 'Exchange Rate', 'Population', 'NDVI Ratio', 'Disaster Affected'];
 
     let mapChart;
