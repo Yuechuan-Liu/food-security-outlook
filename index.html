@@ -11,6 +11,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
         
+        html, body { 
+        height: 100%; 
+        margin: 0; 
+        padding: 0; 
+        background-color: #fdfdfd; /* 统一设为深色背景 */
+    }
+
+    /* 页面容器：确保最小高度并消除溢出 */
+    .page-content { 
+        display: none; 
+        width: 100%; 
+        min-height: auto !important; 
+        margin: 0;
+        padding-bottom: 0 ; 
+        box-sizing: border-box;
+    }
         /* 全局小地球光标 */
         html, body, *, *::before, *::after, a, button, input, select, textarea { 
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🗺️</text></svg>") 16 16, auto !important;
@@ -21,10 +37,10 @@
             font-family: 'Inter', sans-serif; 
             overflow-x: hidden; 
         }
-        .hero-bg { background: radial-gradient(circle at 70% 50%, #1e3a8a 0%, #020617 100%); min-height: 780px; }
+        .hero-bg { background: radial-gradient(circle at 70% 50%, #e0f2fe 0%, #f0f9ff 100%); min-height: 780px; }
         
-        .search-container { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
-        .search-container:focus-within { border-color: #fca311; background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 15px rgba(252, 163, 17, 0.3); }
+        .search-container { background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; transition: all 0.3s ease; }
+        .search-container:focus-within { border-color: #fedea9; background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 15px rgba(252, 163, 17, 0.3); }
         
         #searchResultList {
             display: none;
@@ -40,7 +56,7 @@
             z-index: 100;
         }
         .search-item { padding: 10px 16px; cursor: pointer; font-size: 12px; transition: all 0.2s; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: white; }
-        .search-item:hover { background: rgba(252, 163, 17, 0.2); color: #fca311; }
+        .search-item:hover { background: rgba(252, 163, 17, 0.2); color: #fedea9; }
         .data-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
         .has-data { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
         .no-data { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
@@ -48,7 +64,7 @@
         .fancy-title { 
             font-family: 'Playfair Display', serif; 
             font-style: italic;
-            background: linear-gradient(to bottom, #ffffff, #94a3b8);
+            background: linear-gradient(to bottom, #1e293b, #64748b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -56,9 +72,9 @@
         .map-legend-inner { 
             position: absolute;
             bottom: 50px; left: 40px;
-            background: rgba(15, 23, 42, 0.85); 
+            background: rgba(255, 255, 255, 0.9); 
             backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255,255,255,0.1); 
+            border: 1px solid #e2e8f0; 
             padding: 0.85rem; border-radius: 1rem; width: 170px; z-index: 50;
         }
 
@@ -68,9 +84,9 @@
         
         .news-item { border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease; }
         .news-item:hover { background-color: #f8fafc; transform: translateX(4px); }
-        .tag-economic { background: #dbeafe; color: #1e40af; }
-        .tag-climate { background: #dcfce7; color: #166534; }
-        .tag-conflict { background: #fee2e2; color: #991b1b; }
+        .tag-economic { background: #dbeafe; color: #475e73; }
+        .tag-climate { background: #dcfce7; color: #5e8a6f; }
+        .tag-conflict { background: #fee2e2; color: #6d5959; }
 
         #driverCarousel { height: 260px; overflow: hidden; position: relative; cursor: pointer; }
         .driver-list { position: absolute; width: 100%; top: 0; left: 0; }
@@ -84,35 +100,35 @@
 </head>
 <body class="antialiased">
 
-    <header class="bg-[#020617] text-white px-10 py-5 flex justify-between items-center border-b border-white/10 sticky top-0 z-50">
+    <header class="bg-white/90 text-white px-10 py-5 flex justify-between items-center border-b border-slate-100 sticky top-0 z-50">
         <div class="flex items-center space-x-4" onclick="showPage('home')" style="cursor: pointer;">
-            <div class="w-14 h-14 border-2 border-yellow-500 rounded-full flex items-center justify-center font-bold text-yellow-500">FOOD</div>
+            <div class="w-14 h-14 border-2 border-slate-400 rounded-full flex items-center justify-center font-bold text-slate-500">FOOD</div>
             <div>
-                <h1 class="text-xl font-bold tracking-tighter uppercase">World Food Security</h1>
-                <p class="text-[10px] text-blue-400 tracking-[0.3em] uppercase">Forecast Cycle 2026</p>
+                <h1 class="text-xl font-bold tracking-tighter uppercase text-slate-800">World Food Security</h1>
+                <p class="text-[10px] tracking-[0.3em] uppercase" style="color: #42768c">Forecast Cycle 2026</p>
             </div>
         </div>
-        <nav class="hidden lg:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-gray-400">
-            <a href="javascript:void(0)" onclick="showPage('methodology')" class="hover:text-yellow-500 transition">Dual-branch Prediction Methodology</a>
-            <a href="javascript:void(0)" onclick="showPage('strategy')" class="hover:text-yellow-500 transition">Global Strategy</a>
-            <a href="javascript:void(0)" onclick="showPage('database')" class="hover:text-yellow-500 transition">Database</a>
+        <nav class="hidden lg:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-slate-500">
+            <a href="javascript:void(0)" onclick="showPage('methodology')" class="hover:text-blue-600 transition">Dual-branch Prediction Methodology</a>
+            <a href="javascript:void(0)" onclick="showPage('strategy')" class="hover:text-blue-600 transition">Global Strategy</a>
+            <a href="javascript:void(0)" onclick="showPage('database')" class="hover:text-blue-600 transition">Database</a>
         </nav>
-        <button class="bg-yellow-500 text-black px-6 py-2 rounded font-black text-xs uppercase shadow-xl hover:bg-yellow-400 transition">Research Report upload </button>
+        <button class="bg-[#7a9bb0] text-white px-6 py-2 rounded-xl font-black text-xs uppercase shadow-lg hover:bg-[#6c8ca1] transition-all transform hover:scale-105">Research Report upload </button>
     </header>
 
     <div id="home-page" class="page-content active-page">
         <section class="hero-bg relative text-white px-10 py-10 overflow-hidden">
             <div class="max-w-[1650px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
                 <div class="lg:col-span-4 flex flex-col justify-center pr-8">
-                    <span class="text-xs font-black text-blue-500 tracking-[0.4em] uppercase mb-4 tracking-widest">Scientific Framework</span>
+                    <span class="color: #536a94;" class="text-xs font-black tracking-[0.4em] uppercase mb-4 tracking-widest">Scientific Framework</span>
                     <h2 class="fancy-title text-4xl xl:text-5xl font-bold mb-6 leading-tight">
                         Global Food Inflation:<br>Bi-Monthly Early Warning & Near-Term Forecast
                     </h2>
                     <p class="text-gray-400 text-sm leading-relaxed mb-10">
-                        The <b>Dual-branch Prediction Model</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 88 nations, identifying anomalies <b>2 months</b> in advance.
+                        The <b>Dual-branch Prediction Model</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 93 nations, identifying anomalies <b>2 months</b> in advance.
                     </p>
                     <div class="flex space-x-4">
-                        <button class="bg-yellow-500 text-black px-8 py-3 rounded font-bold text-xs uppercase tracking-widest shadow-2xl hover:bg-yellow-400 transition">Documentation</button>
+                        <button class="bg-[#fef3c7] text-[#92400e] px-8 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest shadow-sm hover:bg-[#fde68a] transition-all border border-[#fde68a]/50">Documentation</button>
                     </div>
                 </div>
 
@@ -130,12 +146,12 @@
                     <div class="map-legend-inner shadow-2xl border border-white/10">
                         <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Dual-branch Prediction Model Inflation Index</p>
                         <div class="flex flex-col space-y-2.5">
-                            <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #60a5fa, #1e40af, #f97316, #dc2626);"></div>
-                            <div class="flex justify-between text-[8px] font-black text-gray-300 uppercase tracking-tighter">
+                            <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #c9dae0, #a2c4c9, #e6ccb3, #f2d5d5);"></div>
+                            <div class="flex justify-between text-[8px] font-black text-slate-400 uppercase tracking-tighter">
                                 <span>Stable</span><span>Extreme Risk</span>
                             </div>
                             <div class="pt-2 border-t border-white/10 flex items-center space-x-2 text-[9px] text-gray-500 font-medium">
-                                <span class="w-2.5 h-2.5 bg-white/10 rounded"></span> <span>General Area</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span> <span>General Area</span>
                             </div>
                         </div>
                     </div>
@@ -238,65 +254,79 @@
         </main>
     </div>
 
-<div id="methodology-page" class="page-content hero-bg px-10 py-16 text-white">
-        <div class="max-w-[1200px] mx-auto">
-            <h2 class="fancy-title text-5xl font-black mb-12">Dual-branch Prediction</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
-                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">01. Wavelet Decomposition</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">Complex non-stationary inflation time series are decomposed via Discrete Wavelet Transform (DWT) into High-frequency Noise and Low-frequency Trend components.</p>
-                </div>
+<div id="methodology-page" class="page-content hero-bg px-10 py-16 text-slate-800">
+    <div class="max-w-[1200px] mx-auto">
+        <h2 class="fancy-title text-5xl font-black mb-12" style="background: linear-gradient(to bottom, #2c3e50, #4a6572); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Dual-branch Prediction
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(162,196,201,0.15)] transition-all hover:shadow-lg">
+                <h3 class="text-[#4a6572] font-bold text-xl mb-4 italic flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 bg-[#a2c4c9] rounded-full shadow-sm"></span> 01. Wavelet Decomposition
+                </h3>
+                <p class="text-slate-700 leading-relaxed text-sm font-medium">
+                    Complex non-stationary inflation time series are decomposed via Discrete Wavelet Transform (DWT) into High-frequency Noise and Low-frequency Trend components.
+                </p>
+            </div>
 
-                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl">
-                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">02. DLinear Parallel Module</h3>
-                    <p class="text-gray-400 leading-relaxed text-sm">Utilizing a DLinear architecture to capture long-term sequence trends directly through single-layer linear networks, significantly reducing computational overhead compared to Transformers.</p>
-                </div>
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(162,196,201,0.15)] transition-all hover:shadow-lg">
+                <h3 class="text-[#4a6572] font-bold text-xl mb-4 italic flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 bg-[#c9dae0] rounded-full shadow-sm"></span> 02. DLinear Parallel Module
+                </h3>
+                <p class="text-slate-700 leading-relaxed text-sm font-medium">
+                    Utilizing a DLinear architecture to capture long-term sequence trends directly through single-layer linear networks, significantly reducing computational overhead compared to Transformers.
+                </p>
+            </div>
 
-                <div class="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-xl md:col-span-2">
-                    <h3 class="text-yellow-500 font-bold text-xl mb-4 italic">Architecture Flowchart</h3>
-                    <div class="h-[300px] w-full bg-blue-900/20 rounded-2xl flex items-center justify-center border border-white/5 mt-4">
-                        <span class="text-gray-500 italic uppercase tracking-widest text-xs">Technical Pipeline: Input Data -> DWT -> DLinear Projection -> Fusion Output</span>
-                    </div>
+            <div class="bg-white p-10 rounded-[3rem] border border-slate-100 md:col-span-2 shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
+                <h3 class="text-[#4a6572] font-bold text-lg mb-8 italic text-center uppercase tracking-[0.25em]">Architecture Flowchart</h3>
+                <div class="h-[320px] w-full bg-[#fcfdfe] rounded-[2rem] flex items-center justify-center border border-dashed border-[#c9dae0]">
+                    <span class="text-[#7a9bb0] italic uppercase tracking-[0.2em] text-xs font-bold">
+                        Technical Pipeline: Input Data <i class="fas fa-arrow-right mx-3 text-[#a2c4c9]"></i> DWT <i class="fas fa-arrow-right mx-3 text-[#c9dae0]"></i> DLinear <i class="fas fa-arrow-right mx-3 text-[#cbd5e1]"></i> Fusion Output
+                    </span>
                 </div>
+            </div>
 
-                <div class="md:col-span-2 mt-8 bg-gradient-to-r from-yellow-500/20 to-transparent p-10 rounded-[3rem] border border-yellow-500/30 flex flex-col md:flex-row items-center justify-between backdrop-blur-md">
-                    <div class="mb-8 md:mb-0">
-                        <div class="flex items-center space-x-3 mb-3">
-                            <i class="fab fa-python text-yellow-500 text-2xl"></i>
-                            <h3 class="text-white font-black text-2xl uppercase tracking-tighter">Model Source Code</h3>
+            <div class="md:col-span-2 mt-8 bg-white p-10 rounded-[3rem] border border-slate-100 flex flex-col md:flex-row items-center justify-between shadow-[0_15px_50px_rgba(162,196,201,0.1)]">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-[#eff6f7] rounded-2xl flex items-center justify-center">
+                            <i class="fab fa-python text-[#4a6572] text-xl"></i>
                         </div>
-                        <p class="text-gray-400 text-sm max-w-xl">
-                            Download the core implementation of the <b>Dual-branch Prediction Model</b>. The package includes the Wavelet decomposition layers, DLinear trend modules, and the adaptive fusion weights script (PyTorch version).
-                        </p>
+                        <h3 class="text-[#2c3e50] font-black text-2xl uppercase tracking-tighter">Model Source Code</h3>
                     </div>
-                    
-                    <a href="data:text/plain;charset=utf-8," download="Dual-branch Prediction Model.py" 
-                       class="group relative inline-flex items-center justify-center px-10 py-5 font-black text-black transition-all duration-200 bg-yellow-500 rounded-2xl hover:bg-yellow-400 shadow-[0_0_30px_rgba(252,163,17,0.4)]">
-                        <i class="fas fa-download mr-3 animate-bounce"></i>
-                        <span class="uppercase tracking-widest text-xs">Download .PY Script</span>
-                    </a>
+                    <p class="text-slate-600 text-sm max-w-xl font-medium leading-relaxed">
+                        Download the core implementation of the <b>Dual-branch Prediction Model</b>. Includes Wavelet decomposition layers, DLinear trend modules, and the adaptive fusion weights script.
+                    </p>
                 </div>
+                
+                <a href="data:text/plain;charset=utf-8" download="Dual-branch Prediction Model.py" 
+                   class="group relative inline-flex items-center justify-center px-10 py-5 font-bold text-white transition-all duration-300 bg-[#4a6572] hover:bg-[#34495e] rounded-2xl hover:scale-105 shadow-md">
+                    <i class="fas fa-download mr-3 animate-bounce"></i>
+                    <span class="uppercase tracking-widest text-xs">Download .PY Script</span>
+                </a>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="strategy-page" class="page-content bg-slate-50 min-h-screen px-10 py-16">
+<div id="strategy-page" class="page-content bg-slate-50 min-h-screen px-10 py-16">
         <div class="max-w-[1400px] mx-auto">
-            <h2 class="text-blue-950 text-4xl font-black mb-8 border-l-8 border-yellow-500 pl-6 uppercase">Regional Strategic Reports</h2>
+            <h2 class="text-[#4a6572] text-4xl font-black mb-8 border-l-8 border-[#F4CB7A] pl-6 uppercase">Regional Strategic Reports</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <script>
-                    const nations = ["China", "Russia", "Brazil", "India", "Nigeria", "Argentina", "Japan", "Germany", "France", "Australia"];
+                    const nations = ["China", "Russia", "Brazil", "India", "Nigeria", "Argentina", "Japan", "Germany", "France", "Australia", "Ukraine"];
                     nations.forEach(n => {
                         document.write(`
-                            <div id="strategy-${n}" class="bg-white p-6 rounded-3xl shadow-xl hover:shadow-2xl transition border-2 border-transparent hover:border-yellow-500">
+                            <div id="strategy-${n}" class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition border-2 border-transparent hover:border-[#a2c4c9]">
                                 <div class="flex justify-between items-center mb-4">
-                                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase">${n} Report</span>
+                                    <span class="text-xs font-bold text-[#7a9bb0] bg-[#f0f4f8] px-3 py-1 rounded-full uppercase">${n} Report</span>
                                     <span class="text-[10px] text-gray-400 italic">Cycle: 2026.Q1</span>
                                 </div>
-                                <h4 class="text-lg font-black text-blue-950 mb-3 underline decoration-yellow-500 underline-offset-4">${n} Risk Mitigation Plan</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on Dual-branch Prediction Model projections, inflation in ${n} is driven by a correlation between Precipitation anomalies and Exchange Rate volatility.</p>
-                                <button class="w-full bg-blue-950 text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-yellow-400 hover:text-black transition">Download Analysis</button>
+                                <h4 class="text-lg font-black text-[#4a6572] mb-3 underline decoration-[#c9dae0] underline-offset-4">${n}</h4>
+                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on Dual-branch Prediction Model projections, inflation in ${n} is driven by specific multi-view feature correlations.</p>
+                                <button onclick="showCountryDetail('${n}')" class="w-full bg-[#99b6b4] text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-[#a2c4c9] transition">View Analysis</button>
                             </div>
                         `);
                     });
@@ -305,15 +335,71 @@
         </div>
     </div>
 
-    <div id="database-page" class="page-content bg-white min-h-screen">
-        <div class="bg-blue-950 text-white px-10 py-12">
+<div id="country-detail-page" class="page-content bg-[#fdfdfd] text-[#2c3e50] pt-0 px-8 pb-4 h-auto overflow-hidden">
+    <div class="flex justify-between items-center mb-10">
+        <button onclick="showPage('strategy')" class="text-[#7a9bb0] hover:text-[#a2c4c9] flex items-center gap-2 transition uppercase text-xs font-black">
+            <i class="fas fa-arrow-left"></i> Back to Strategy
+        </button>
+        <div class="text-right">
+            <h2 class="text-7xl font-black uppercase tracking-tighter text-[#2c3e50]" id="det-name">Country</h2>
+            <p class="text-[#a2c4c9] text-[10px] tracking-[0.3em] font-bold uppercase">Detailed Risk Assessment 2026</p>
+        </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch"> 
+    
+    <div class="lg:col-span-3 flex flex-col gap-4">
+        <div class="bg-white border border-[#f2d5d5]/30 p-5 rounded-[1.5rem] shadow-sm">
+            <p class="text-gray-400 text-[10px] uppercase font-black mb-2 tracking-widest">AWLM Forecast</p>
+            <div class="text-5xl font-black text-[#e6ccb3] mb-1" id="det-infl" style="background: linear-gradient(to right, #4a6572, #7a9bb0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">>0.0%</div>
+            <div id="det-change" class="text-[12px] font-bold uppercase tracking-tight">0.0%</div>
+        </div>
+
+        <div class="bg-white border border-slate-100 p-5 rounded-[1.5rem] flex-1 flex flex-col shadow-sm">
+            <p class="text-gray-400 text-[10px] uppercase font-black mb-3 tracking-widest">Country Profile</p>
+            <div id="det-profile-content" class="flex-1 text-[#64748b]"></div>
+            <div class="mt-4 pt-4 border-t border-slate-50" id="det-weights-list"></div>
+        </div>
+
+        <div id="det-status-card" class="py-4 px-6 rounded-[1.5rem] border border-slate-100 flex flex-col items-center justify-center text-center bg-white shadow-sm">
+            <div id="det-status-icon" class="text-3xl mb-1"></div>
+            <h3 id="det-status-text" class="text-lg font-black uppercase tracking-widest">MONITORING</h3>
+        </div>
+    </div>
+
+    <div class="lg:col-span-6 flex flex-col gap-4">
+        <div class="bg-white border border-[#c9dae0]/50 rounded-[2rem] p-5 h-[310px] shadow-sm">
+            <h3 class="text-[14px] font-black uppercase mb-3 text-[#7a9bb0] italic">Pearson Correlation</h3>
+            <div id="pearsonChart" class="h-full w-full"></div>
+        </div>
+        <div class="bg-white border border-[#a2c4c9]/30 rounded-[2rem] p-5 h-[310px] shadow-sm">
+            <h3 class="text-[14px] font-black uppercase mb-3 text-[#EEBF79] italic">SHAP Feature Importance</h3>
+            <div id="shapChart" class="h-full w-full"></div>
+        </div>
+    </div>
+
+    <div class="lg:col-span-3">
+        <div class="bg-white border border-slate-100 rounded-[1.5rem] p-6 h-full flex flex-col justify-between shadow-sm">
+            <div>
+                <h4 class="text-[11px] font-black uppercase tracking-widest text-[#7a9bb0] border-l-2 border-[#a2c4c9] pl-3 mb-6">Characteristics</h4>
+                <div id="det-analysis-content" class="space-y-6 text-[#64748b]"></div>
+            </div>
+            <button class="w-full py-4 bg-[#334e5c] text-white rounded-xl font-black text-[12px] uppercase hover:bg-[#1e293b] transition-all mt-6 shadow-md">
+                Export Analysis Reports
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+<div id="database-page" class="page-content bg-[#fdfdfd] min-h-screen">
+        <div class="bg-[#c9dae0] text-[#4a6572] px-10 py-12 border-b border-white/50">
             <h2 class="text-3xl font-black uppercase tracking-tighter">Raw Data Terminal</h2>
-            <p class="text-blue-400 text-xs mt-2 uppercase tracking-widest">Access 93 Nations Historical & Forecast datasets</p>
+            <p class="text-[#7a9bb0] text-xs mt-2 uppercase tracking-widest font-bold">Access 93 Nations Historical & Forecast datasets</p>
         </div>
         <div class="px-10 py-12">
-            <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-2xl">
-                <table class="w-full text-left text-xs text-gray-600">
-                    <thead class="bg-slate-50 text-blue-900 uppercase font-black">
+            <div class="overflow-x-auto rounded-3xl border border-slate-100 shadow-sm bg-white">
+                <table class="w-full text-left text-xs text-slate-500">
+                    <thead class="bg-[#f1f5f9] text-[#4a6572] uppercase font-black">
                         <tr>
                             <th class="p-5">Nation ID</th>
                             <th class="p-5">Indicator</th>
@@ -323,17 +409,17 @@
                             <th class="p-5">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50">
+                    <tbody class="divide-y divide-slate-50">
                         <script>
                             for(let i=0; i<15; i++) {
                                 document.write(`
-                                    <tr class="hover:bg-slate-50 transition">
-                                        <td class="p-5 font-bold text-blue-950">NAT-${1000+i}</td>
+                                    <tr class="hover:bg-[#f8fafc] transition">
+                                        <td class="p-5 font-bold text-[#4a6572]">NAT-${1000+i}</td>
                                         <td class="p-5">Core Food Inflation (Dual-branch Prediction Model)</td>
-                                        <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
-                                        <td class="p-5">${(Math.random()*15).toFixed(2)}%</td>
-                                        <td class="p-5"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded font-bold">± 1.25%</span></td>
-                                        <td class="p-5"><button class="text-blue-600 font-black hover:underline uppercase">Export CSV</button></td>
+                                        <td class="p-5 font-bold text-[#618AA1]">${(Math.random()*15).toFixed(2)}%</td>
+                                        <td class="p-5 font-bold text-[#72A6AD]">${(Math.random()*15).toFixed(2)}%</td>
+                                        <td class="p-5"><span class="bg-[#F3EDEA] text-[#C19A8B] px-2 py-0.5 rounded font-bold">± 1.25%</span></td>
+                                        <td class="p-5"><button class="text-[#4a6572] font-black hover:text-[#a2c4c9] transition uppercase">Export CSV</button></td>
                                     </tr>
                                 `);
                             }
@@ -375,21 +461,299 @@
 
     // 跳转至 Database 页面并高亮
     function jumpToDatabase(countryName) {
+        // 1. 先切换到 Database 页面
         showPage('database');
+        
         setTimeout(() => {
-            const element = document.getElementById('db-' + countryName);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // 边框高亮颜色与 hover 一致
-                element.style.borderColor = "#fca311";
-                element.style.borderWidth = "2px";
-                setTimeout(() => {
-                    element.style.borderColor = "transparent";
-                }, 2000);
+            // 2. 移除旧的高亮查找逻辑，因为表格行没有 'db-' 的 id
+            // 改为在表格中查找包含该国家名称的单元格
+            const tableRows = document.querySelectorAll('#database-page tbody tr');
+            let targetRow = null;
+            
+            for (let row of tableRows) {
+                // 假设国家名称存储在每行的第一个单元格中
+                const firstCell = row.querySelector('td:first-child');
+                if (firstCell && firstCell.innerText.includes(countryName)) {
+                    targetRow = row;
+                    break;
+                }
             }
-        }, 300);
+
+            if (targetRow) {
+                // 滚动到该行
+                targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // 添加高亮效果
+                targetRow.style.transition = 'all 0.3s ease';
+                targetRow.style.backgroundColor = '#fef3c7'; // 柔和的高亮黄色
+                targetRow.style.boxShadow = '0 0 0 2px #fca311';
+                
+                setTimeout(() => {
+                    targetRow.style.backgroundColor = '';
+                    targetRow.style.boxShadow = '';
+                }, 2000);
+            } else {
+                // 如果找不到精确匹配，可以简单地将页面滚动到表格顶部
+                const tableContainer = document.querySelector('#database-page .overflow-x-auto');
+                if (tableContainer) {
+                    tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }, 100); // 稍微延迟以确保页面已切换完成
+    }
+    // --- 核心 JavaScript 逻辑开始：插入在 jumpToDatabase 之后 ---
+
+    // 1. 专项国家数据 (数据源自你提供的 CSV 与 SHAP 瀑布图)
+// 1. 扩展专项国家数据：包含风险等级和深度分析特点
+const countryDetailData = {
+    "Ukraine": {
+        inflation: "15.4%", 
+        change: "+3.2%", 
+        confidence: "91.5%", 
+        level: "warning", // 风险状态
+        pearson: [
+            { name: "Net Refugees", value: 0.43 },
+            { name: "Exchage Rate", value: 0.32 },
+            { name: "Population", value: 0.20 },
+            { name: "Headline Inflation", value: 0.16 },
+            { name: "Fatalities", value: 0.15 }
+        ],
+        shap: [
+            { name: "Food Infation", value: 0.95 },
+            { name: "Exchage Rate", value: 0.1 },
+            { name: "Headline Inflation", value: -0.09 },
+            { name: "Net Refugees", value: -0.04 },
+            { name: "Population", value: 0.02 },
+        ],
+        profile: {
+            region: "Eastern Europe",
+            status: "Major Grain Exporter",
+            bio: "Ukraine serves as a vital global agricultural hub, managing the world's most fertile chernozem (black soil) to provide critical grain supplies for Europe and Africa. The current forecast is dictated by a protracted systemic shock: geopolitical conflict has not only decimated domestic sowing capacity but also severed traditional Black Sea logistical arteries. With strategic storage silos and irrigation networks compromised, the nation’s output remains the primary source of global food price volatility, maintaining a permanent risk premium across international commodity markets through 2026."
+        },
+        // 右侧全部分析内容
+        analysis: [
+            { label: "Shock Source", value: "Geopolitical Conflict", desc: "Primary drivers are infrastructure damage and agricultural production halts due to ongoing conflict." },
+            { label: "Currency Impact", value: "High Volatility", desc: "Hryvnia depreciation shows a strong correlation with imported food costs, creating imported inflation." },
+            { label: "Logistics Risk", value: "Corridor Disruption", desc: "Restricted export routes and surged inland transport costs directly inflate terminal retail prices." },
+            { label: "Labor Market", value: "Refugee Outflow", desc: "Mass labor loss (Net Refugees) has increased costs in harvesting and food processing sectors." }
+        ]
+    },
+    "Japan": {
+        inflation: "3.2%", 
+        change: "-0.5%", 
+        confidence: "96.8%", 
+        level: "safe", // 平稳状态
+        pearson: [
+            { name: "Net Refugees", value: 0.39 },
+            { name: "Fatalities", value: 0.39},
+            { name: "C_cifvalue", value: 0.30 },
+            { name: "Population", value: 0.23 },
+            { name: "Headline Inflation", value: 0.20 }
+        ],
+        shap: [
+            { name: "Food Infation", value: 0.39},
+            { name: "Fatalities", value: 0 },
+            { name: "Population", value: 0 },
+            { name: "Net Refugees", value: 0 },
+            { name: "C_cifvalue", value: 0}
+        ],
+        profile: {
+                region: "East Asia",
+                status: "High Import Dependency",
+                bio: "Japan maintains a highly sophisticated yet vulnerable food security architecture, characterized by a 60% dependency on calorie-based imports and limited domestic arable land. As a premier advanced economy, its food inflation trends are predominantly dictated by the 'Imported Shock' mechanism: the synergy between global commodity price surges and Yen (JPY) exchange rate volatility."
+        },
+        analysis: [
+        { label: "Supply Structure", value: "Import Dependent", desc: "Food inflation is highly sensitive to international CIF (Cost, Insurance, and Freight) prices." },
+        { label: "Market State", value: "Stable Equilibrium", desc: "Currently in a balanced state; SHAP values indicate minimal interference from domestic production." },
+        { label: "Policy Buffer", value: "Monetary Stability", desc: "Despite Yen fluctuations, government subsidies have effectively cushioned extreme price spikes." },
+        { label: "Consumer Demand", value: "Low Elasticity", desc: "Aging population results in stable consumption patterns with no panic-buying trends." }
+      ]
+    }
+};
+
+function showPage(pageId) {
+    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+    const target = document.getElementById(pageId + '-page');
+    if (target) target.classList.add('active-page');
+    
+    // 详情页强制深色背景，其他页恢复浅色
+    document.body.style.backgroundColor = "#FDFDFD";
+    window.scrollTo(0, 0);
+    if(pageId === 'home' && window.mapChart) {
+        setTimeout(() => { mapChart.resize(); }, 10);
+    }
+}
+
+// 3. 唯一的详情页渲染函数
+function showCountryDetail(name) {
+    const data = countryDetailData[name];
+    if (!data) {
+        alert("Detailed data for " + name + " is currently under synchronization...");
+        return;
     }
 
+    // A. 切换页面并注入标题数值
+    showPage('country-detail');
+    const detailPage = document.getElementById('country-detail-page');
+    if (detailPage) {
+        detailPage.style.minHeight = "auto"; // 强制重置
+        detailPage.style.height = "auto";    // 确保高度随内容塌陷
+        detailPage.style.paddingTop = "0px";
+    }
+    
+    const nameEl = document.getElementById('det-name');
+    nameEl.innerText = name;
+        // --- 新增：极致压缩名字的行高，让下方的表吸上来 ---
+    nameEl.style.paddingTop = "20px";    // 1. 物理向下推 40px (觉得不够可以加到 60px)
+    nameEl.style.lineHeight = "0.7";    // 2. 极致压缩文字下方空间
+    nameEl.style.marginBottom = "0px";  // 3. 消除底部外边距
+    nameEl.style.display = "block";
+    const subTitle = nameEl.nextElementSibling;
+    if (subTitle) {
+        subTitle.style.marginTop = "15px";     // 正值：让黄色字向下移动，离 UKRAINE 远点
+        subTitle.style.marginBottom = "0px";    // 0：让它离下面的表格更近
+        subTitle.style.display = "block";
+    }
+    const gridContainer = detailPage.querySelector('.grid');
+    if (gridContainer) {
+        gridContainer.style.marginTop = "-28px"; // 负值越大，表格升得越高。你可以根据视觉效果调成 -30px 或 -15px
+    }
+    document.getElementById('det-infl').innerText = data.inflation;
+    const changeEl = document.getElementById('det-change');
+    changeEl.innerText = data.change + " VS LAST MONTH";
+    changeEl.className = 'text-[12px] font-bold'; // 先定义基础大小
+    changeEl.style.color = data.change.includes('+') ? "#e5989b" : "#a2c4c9"; 
+    changeEl.innerText = data.change + " VS LAST MONTH";
+
+    // B. 左侧注入国家介绍（读取你的真实数据）
+    const profileBox = document.getElementById('det-profile-content');
+    if (profileBox && data.profile) {
+        profileBox.innerHTML = `
+            <div class="mb-1 text-left"> 
+                <p class="text-[11px] text-slate-500 uppercase font-black mb-0.5">Region / Status</p>
+                <p class="text-[15px] font-bold text-slate-900 uppercase leading-tight">${data.profile.region} — ${data.profile.status}</p>
+            </div>
+            <div class="flex-1 text-left mt-4"> 
+                <p class="text-[11px] text-slate-500 uppercase font-black mb-1">Strategic Context</p>
+                <p class="text-[15px] text-slate-800 leading-[1.8] font-medium">${data.profile.bio}</p>
+            </div>
+        `;
+    }
+
+    // C. 左侧底部指标（物理压缩对齐）
+    const metricsBox = document.getElementById('det-weights-list');
+    if (metricsBox) {
+
+        metricsBox.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-2 mt-1 text-left">
+            <div>
+                <p class="text-[10px] text-white/30 uppercase font-black">Accuracy</p>
+                <p class="text-sm font-black text-white italic">${data.confidence}</p>
+            </div>`;
+    }
+
+    // D. 警报状态切换（三角形感叹号）
+    const isWarn = data.level === 'warning';
+    const statusCard = document.getElementById('det-status-card');
+    
+    // 定义莫兰迪颜色变量
+    const morandiRed = "#CA706E";
+    const morandiGreen = "#6BA5A9";
+
+    if (statusCard) {
+        // 1. 动态切换边框和背景颜色 (莫兰迪色)
+        statusCard.style.border = `1px solid ${isWarn ? 'rgba(229, 152, 155, 0.4)' : 'rgba(162, 196, 201, 0.4)'}`;
+        statusCard.style.backgroundColor = isWarn ? 'rgba(229, 152, 155, 0.05)' : 'rgba(162, 196, 201, 0.05)';
+        statusCard.style.boxShadow = isWarn ? '0 0 30px rgba(229, 152, 155, 0.15)' : 'none';
+        
+        // 保持基础布局类名不变
+        statusCard.className = "py-3 px-6 rounded-[1.5rem] flex flex-col items-center justify-center text-center transition-all mt-4";
+        
+        // 2. 修正图标显示问题：使用免费版图标 fa-shield-alt
+        document.getElementById('det-status-icon').innerHTML = isWarn 
+            ? `<i class="fas fa-exclamation-triangle text-2xl mb-1" style="color: ${morandiRed}; opacity: 0.8;"></i>` 
+            : `<i class="fas fa-shield-alt text-2xl mb-1" style="color: ${morandiGreen};"></i>`; 
+            
+        // 3. 修改状态文字颜色
+        const sText = document.getElementById('det-status-text');
+        sText.innerText = isWarn ? "CRITICAL RISK" : "STABLE";
+        sText.style.color = isWarn ? morandiRed : morandiGreen;
+        sText.className = "text-base font-black uppercase tracking-widest";
+    }
+
+    // E. 右侧分析注入（字号大一号 + 行间距拉大）
+    const analysisBox = document.getElementById('det-analysis-content');
+    if (analysisBox && data.analysis) {
+        analysisBox.innerHTML = data.analysis.map(item => `
+            <div class="border-b border-slate-200 pb-3 last:border-0 text-left">
+                <p class="text-[11px] font-black text-slate-500 uppercase mb-1 tracking-widest">${item.label}</p>
+                <p class="text-[17px] font-bold text-slate-900 mb-1 underline decoration-slate-300 decoration-2 underline-offset-2">${item.value}</p>
+                <p class="text-[14px] text-slate-700 leading-relaxed font-normal">${item.desc}</p>
+            </div>
+        `).join('');
+    }
+    renderDetailCharts(data);
+}
+
+// 4. 绘图函数
+function renderDetailCharts(data) {
+    const pChart = echarts.init(document.getElementById('pearsonChart'));
+    pChart.setOption({
+        grid: { left: '30%', right: '15%', top: '2%', bottom: '18%' },
+        xAxis: { 
+            type: 'value', 
+            axisLabel: { color: '#64748b', fontSize: 10 }, 
+            splitLine: { lineStyle: { color: '#f1f5f9' } } 
+        },
+        yAxis: { 
+            type: 'category', 
+            data: data.pearson.map(i => i.name), 
+            axisLabel: { color: '#1e293b', fontSize: 11, fontWeight: 'bold' } // 加深文字
+        },
+        series: [{ 
+            data: data.pearson.map(i => i.value), 
+            type: 'bar',
+            label: { show: true, position: 'right', color: '#475569', fontSize: 10 },
+            itemStyle: { 
+                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                    {offset: 0, color: '#F6E5AF'}, 
+                    {offset: 1, color: '#86C5CA'}
+                ]), 
+                borderRadius: [0, 4, 4, 0] 
+            }
+        }]
+    });
+
+    const sChart = echarts.init(document.getElementById('shapChart'));
+    sChart.setOption({
+        grid: { left: '10%', right: '10%', top: '10%', bottom: '25%' },
+        xAxis: { 
+            type: 'category', 
+            data: data.shap.map(i => i.name), 
+            axisLabel: { color: '#1e293b', fontSize: 11, rotate: 20, fontWeight: 'bold' } // 加深文字
+        },
+        yAxis: { 
+            type: 'value', 
+            axisLabel: { color: '#64748b', fontSize: 10 }, 
+            splitLine: { show: true, lineStyle: { color: '#e2e8f0', type: 'dashed' } } 
+        },
+        series: [{ 
+            data: data.shap.map(i => i.value), 
+            type: 'bar',
+            label: { show: true, position: 'top', color: '#EEBF70', fontSize: 11, fontWeight: 'bold' },
+            itemStyle: { 
+                // 修正为：上深绿 -> 下透明
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {offset: 0, color: '#EEBF70'}, 
+                    {offset: 1, color: 'rgba(168, 200, 103, 0)'}
+                ]), 
+                borderRadius: [5, 5, 0, 0] 
+            }
+        }]
+    });
+
+    window.addEventListener('resize', () => { pChart.resize(); sChart.resize(); });
+}
+    // --- 核心 JavaScript 逻辑结束 ---
     const dataNations = [
         "Afghanistan", "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
         "Brazil", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Chad", "Chile", "China",
@@ -426,18 +790,18 @@
                 backgroundColor: 'rgba(15, 23, 42, 0.95)', 
                 borderColor: 'rgba(255, 255, 255, 0.1)',
                 borderWidth: 1,
-                textStyle: { color: '#fff', fontSize: 12 },
+                textStyle: { color: '#1e293b', fontSize: 12 },
                 extraCssText: 'backdrop-filter: blur(4px); border-radius: 8px;'
             },
-            visualMap: { show: false, min: 0, max: 25, inRange: { color: ['#60a5fa', '#1e40af', '#f97316', '#dc2626'] } },
+            visualMap: { show: false, min: 0, max: 30, inRange: { color: ['#e0f2f1', '#a2c4c9', '#e6ccb3', '#f2d5d5', '#d4a3a3']  } },
             series: [{
                 type: 'map', map: 'world', roam: true, zoom: 1.2,
-                itemStyle: { areaColor: '#f1f5f9', borderColor: '#cbd5e1', borderWidth: 0.5 },
+                itemStyle: { areaColor: '#fdfdfd', borderColor: '#e2e8f0', borderWidth: 0.5 },
                 label: { show: false },
-                emphasis: { label: { show: false }, itemStyle: { areaColor: '#fca311' } },
-                select: { label: { show: false }, itemStyle: { areaColor: '#fca311' } },
+                emphasis: { label: { show: false }, itemStyle: { areaColor: '#FEE2B7' } },
+                select: { label: { show: false }, itemStyle: { areaColor: '#FEE2B7' } },
                 data: dataNations.map(name => {
-                    let val = (Math.random() * 10 + 2).toFixed(1);
+                    let val = (Math.random() * 20).toFixed(1);
                     return { name: name, value: val };
                 })
             }]
@@ -535,7 +899,7 @@
                         grid: { left: 30, right: 5, top: 5, bottom: 5 },
                         xAxis: { show: false },
                         yAxis: { type: 'category', data: ['H', 'M', 'L'], axisLabel: { fontSize: 7, fontWeight: 'bold' } },
-                        series: [{ type: 'bar', data: [Math.random()*100, Math.random()*80, Math.random()*60], color: '#1e3a8a', barWidth: '50%', itemStyle: { borderRadius: [0, 2, 2, 0] } }]
+                        series: [{ type: 'bar', data: [Math.random()*100, Math.random()*80, Math.random()*60], color: '#7d93a4', barWidth: '50%', itemStyle: { borderRadius: [0, 2, 2, 0] } }]
                     });
                 }
             }, 200);
@@ -561,7 +925,7 @@
         trendChart.setOption({
             xAxis: { type: 'category', data: ['Jan','Feb','Mar'], axisLabel: { fontWeight: 'bold' } },
             yAxis: { type: 'value' },
-            series: [{ data: [12.5, 19.2, 14.8], type: 'line', smooth: true, color: '#fca311', lineStyle: { width: 4 } }]
+            series: [{ data: [12.5, 19.2, 14.8], type: 'line', smooth: true, color: '#81a4a9', lineStyle: { width: 4 } }]
         });
 
         window.onclick = (e) => { 
