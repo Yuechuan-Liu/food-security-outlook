@@ -313,7 +313,7 @@
                 <div class="w-full bg-[#1e293b] rounded-[2rem] overflow-hidden shadow-lg border border-slate-200 group relative cursor-zoom-in" 
                     onclick="openImageModal('Dual-branch Prediction Model Architecture.png')">
                     
-                    <img src="Dual-branch Prediction Model Architecture.png" 
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
                         alt="Dual-branch Prediction Model Architecture" 
                         class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.05]">
                     
@@ -817,7 +817,7 @@ function showCountryDetail(name) {
 function downloadPDF(countryName) {
     // 1. 定义路径（确保文件名和你的文件夹路径完全一致）
     const fileName = `${countryName}_Report.pdf`;
-    const filePath = `PDFs/${fileName}`; 
+    const blankPdfData = '%PDF-1.0\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj 3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<<>>>>endobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000052 00000 n\n0000000101 00000 n\ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n178\n%%EOF'; 
 
     // 2. 在新窗口打开 PDF 进行预览
     // 浏览器识别到 .pdf 后缀会自动开启预览模式
