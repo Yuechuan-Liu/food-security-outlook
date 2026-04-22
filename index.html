@@ -15,7 +15,7 @@
         height: 100%; 
         margin: 0; 
         padding: 0; 
-        background-color: #fdfdfd; /* 统一设为深色背景 */
+        background-color: #fdfdfd; 
     }
 
     /* 页面容器：确保最小高度并消除溢出 */
@@ -27,9 +27,9 @@
         padding-bottom: 0 ; 
         box-sizing: border-box;
     }
-        /* 全局小地球光标 */
+
         html, body, *, *::before, *::after, a, button, input, select, textarea { 
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🗺️</text></svg>") 16 16, auto !important;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🍭</text></svg>") 16 16, auto !important;
         }
 
         body { 
@@ -40,7 +40,7 @@
         .hero-bg { background: radial-gradient(circle at 70% 50%, #e0f2fe 0%, #f0f9ff 100%); min-height: 780px; }
         
         .search-container { background: rgba(255, 255, 255, 0.8); border: 1px solid #e2e8f0; transition: all 0.3s ease; }
-        .search-container:focus-within { border-color: #fedea9; background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 15px rgba(252, 163, 17, 0.3); }
+        .search-container:focus-within { border-color: #7A9BB0; background: rgba(255, 255, 255, 0.2);box-shadow: 0 0 15px rgba(122, 155, 176, 0.3); }
         
         #searchResultList {
             display: none;
@@ -96,6 +96,19 @@
         /* 页面切换逻辑 CSS */
         .page-content { display: none; }
         .active-page { display: block; }
+        body { 
+            font-size: 15px; 
+        }
+
+        /* 2. 针对你页面中大量使用的类进行微调，强制变大 */
+        .text-xs { font-size: 0.85rem !important; } 
+        .text-\[10px\] { font-size: 11px !important; }
+        .text-\[11px\] { font-size: 12px !important; }
+        .text-\[12px\] { font-size: 13px !important; }
+        .text-\[14px\] { font-size: 14px !important; }
+
+        /* 3. 详情页大标题增强 */
+        #det-name { font-size: 5.5rem !important; }
     </style>
 </head>
 <body class="antialiased">
@@ -105,7 +118,7 @@
             <div class="w-14 h-14 border-2 border-slate-400 rounded-full flex items-center justify-center font-bold text-slate-500">FOOD</div>
             <div>
                 <h1 class="text-xl font-bold tracking-tighter uppercase text-slate-800">World Food Security</h1>
-                <p class="text-[10px] tracking-[0.3em] uppercase" style="color: #42768c">Forecast Cycle 2026</p>
+                <p class="text-[12px] tracking-[0.3em] uppercase" style="color: #42768c">Forecast Cycle 2026</p>
             </div>
         </div>
         <nav class="hidden lg:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-slate-500">
@@ -120,15 +133,15 @@
         <section class="hero-bg relative text-white px-10 py-10 overflow-hidden">
             <div class="max-w-[1650px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
                 <div class="lg:col-span-4 flex flex-col justify-center pr-8">
-                    <span class="color: #536a94;" class="text-xs font-black tracking-[0.4em] uppercase mb-4 tracking-widest">Scientific Framework</span>
+                    <span class="text-[#4a6572] text-xs font-black tracking-[0.4em] uppercase mb-4 block">Scientific Framework</span>
                     <h2 class="fancy-title text-4xl xl:text-5xl font-bold mb-6 leading-tight">
                         Global Food Inflation:<br>Bi-Monthly Early Warning & Near-Term Forecast
                     </h2>
                     <p class="text-gray-400 text-sm leading-relaxed mb-10">
-                        The <b>Dual-branch Prediction Model</b> model captures details via Wavelet decomposition and overall trends with a parallel DLinear module. This framework targets 93 nations, identifying anomalies <b>2 months</b> in advance.
+                        The <b>Dual-branch Prediction Model</b> model consists of three parts: temporal T-branch, causal G-branch and attention fusion module. This framework targets 93 nations, identifying anomalies <b>2 months</b> in advance.
                     </p>
                     <div class="flex space-x-4">
-                        <button class="bg-[#fef3c7] text-[#92400e] px-8 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest shadow-sm hover:bg-[#fde68a] transition-all border border-[#fde68a]/50">Documentation</button>
+                        <button onclick="showPage('methodology')" class="bg-[#7F9EB1] text-[#ECF0F3] px-8 py-3 rounded-2xl font-bold text-xs uppercase tracking-widest shadow-sm hover:bg-[#5D7C8E] transition-all border border-[#5D7C8E]/50">Documentation</button>
                     </div>
                 </div>
 
@@ -137,20 +150,20 @@
                         <div class="relative w-64">
                             <div class="search-container flex items-center px-5 py-2.5 rounded-full backdrop-blur-md">
                                 <i class="fas fa-search text-gray-400 text-xs mr-3"></i>
-                                <input type="text" id="countrySearch" placeholder="Search Target Nation..." class="bg-transparent text-[10px] outline-none text-white w-full font-semibold" autocomplete="off">
+                                <input type="text" id="countrySearch" placeholder="Search Target Nation..." class="bg-transparent text-[12px] outline-none text-white w-full font-semibold" autocomplete="off">
                             </div>
                             <div id="searchResultList" class="scroll-style shadow-2xl"></div>
                         </div>
                     </div>
                     <div id="awlmMap" class="w-full h-[680px]"></div>
                     <div class="map-legend-inner shadow-2xl border border-white/10">
-                        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Dual-branch Prediction Model Inflation Index</p>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 italic">Dual-branch Prediction Model Inflation Index</p>
                         <div class="flex flex-col space-y-2.5">
-                            <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #c9dae0, #a2c4c9, #e6ccb3, #f2d5d5);"></div>
+                            <div class="w-full h-2.5 rounded-full" style="background: linear-gradient(to right, #B2D8E5, #7A9BB0, #5E819D, #CA706E);"></div>
                             <div class="flex justify-between text-[8px] font-black text-slate-400 uppercase tracking-tighter">
                                 <span>Stable</span><span>Extreme Risk</span>
                             </div>
-                            <div class="pt-2 border-t border-white/10 flex items-center space-x-2 text-[9px] text-gray-500 font-medium">
+                            <div class="pt-2 border-t border-white/10 flex items-center space-x-2 text-[10px] text-gray-500 font-medium">
                                 <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span> <span>General Area</span>
                             </div>
                         </div>
@@ -160,14 +173,14 @@
         </section>
 
         <main class="max-w-[1600px] mx-auto px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 -mt-28 relative z-20">
-            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100">
-                <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4">Emerging Markets Trends</h4>
-                <div id="trendChart" class="h-[250px]"></div>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col h-[460px]">
+                <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4">Global Risk Momentum Flow Chart</h4>
+                <div id="trendChart" class="flex-1"></div>
             </div>
 
-            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 flex flex-col h-[460px]">
                 <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4">Regional Analysis: Key Drivers</h4>
-                <div id="driverCarousel">
+                <div id="driverCarousel" class="flex-1">
                     <div class="driver-list" id="carouselList"></div>
                 </div>
             </div>
@@ -176,6 +189,7 @@
                 <h4 class="text-blue-950 font-black text-xs uppercase tracking-widest mb-6 border-b pb-4 flex justify-between items-center">
                     Official Resources <span class="bg-red-100 text-red-600 text-[8px] px-2 py-0.5 rounded-full animate-pulse">LIVE DATA</span>
                 </h4>
+
                 <div class="overflow-y-auto scroll-style flex-1 pr-2">
                     <div class="news-item flex gap-4 py-4 px-2 cursor-pointer">
                         <div class="w-20 h-16 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
@@ -207,7 +221,13 @@
                                 <span class="text-[7px] font-bold uppercase px-1.5 py-0.5 rounded tag-economic">Policy</span>
                                 <span class="text-[7px] text-gray-400">IMF BLOG</span>
                             </div>
-                            <a href="https://www.imf.org/en/Blogs/Articles/2026/01/20/global-economy-navigates-a-narrow-path-to-resilience" target="_blank" class="text-[10px] font-bold text-blue-950 leading-tight hover:text-blue-600 block">IMF: Resilience in the Global Economy 2026</a>
+                            <a href="https://www.imf.org/en/Publications/WEO" target="_blank" 
+                                class="text-[10px] font-bold leading-tight block" 
+                                style="color: #4a6572;"
+                                onmouseover="this.style.color='#7a9bb0'" 
+                                onmouseout="this.style.color='#4a6572'">
+                                IMF: World Economic Outlook 2026
+                            </a>
                         </div>
                     </div>
 
@@ -260,35 +280,61 @@
             Dual-branch Prediction
         </h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-stretch">
             <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(162,196,201,0.15)] transition-all hover:shadow-lg">
                 <h3 class="text-[#4a6572] font-bold text-xl mb-4 italic flex items-center gap-3">
-                    <span class="w-2.5 h-2.5 bg-[#a2c4c9] rounded-full shadow-sm"></span> 01. Wavelet Decomposition
+                    <span class="w-2.5 h-2.5 bg-[#a2c4c9] rounded-full shadow-sm"></span> 01. T-Branch
                 </h3>
                 <p class="text-slate-700 leading-relaxed text-sm font-medium">
-                    Complex non-stationary inflation time series are decomposed via Discrete Wavelet Transform (DWT) into High-frequency Noise and Low-frequency Trend components.
+                    The T-branch applies instance normalization and uses a moving average (kernel size 5) to decompose trend and seasonal components. These are linearly fused and processed through a two-layer PastDecomposableMixing module to extract temporal inflation patterns, output via a denormalized prediction head.
                 </p>
             </div>
 
             <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(162,196,201,0.15)] transition-all hover:shadow-lg">
                 <h3 class="text-[#4a6572] font-bold text-xl mb-4 italic flex items-center gap-3">
-                    <span class="w-2.5 h-2.5 bg-[#c9dae0] rounded-full shadow-sm"></span> 02. DLinear Parallel Module
+                    <span class="w-2.5 h-2.5 bg-[#a2c4c9] rounded-full shadow-sm"></span> 02. G-Branch
                 </h3>
                 <p class="text-slate-700 leading-relaxed text-sm font-medium">
-                    Utilizing a DLinear architecture to capture long-term sequence trends directly through single-layer linear networks, significantly reducing computational overhead compared to Transformers.
+                    The G-branch fuses immediate, lagged, and differential views into an asymmetric adjacency matrix. These relationships are processed through normalized residual layers with GELU and dropout to capture spatial interactions, outputting the inflation forecast via a two-layer fully-connected head.
                 </p>
             </div>
+            
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(162,196,201,0.15)] transition-all hover:shadow-lg">
+                    <h3 class="text-[#4a6572] font-bold text-xl mb-4 italic flex items-center gap-3">
+                        <span class="w-2.5 h-2.5 bg-[#a2c4c9] rounded-full shadow-sm"></span> 03. Attention Fusion
+                    </h3>
+                    <p class="text-slate-700 leading-relaxed text-sm font-medium">
+                        The outputs of T-branch and G-branch are mapped to the unified latent space respectively, and the two branches are adaptively weighted by the learnable query vector through the scaled dot product attention mechanism, and the final prediction result is obtained by output projection.
+                    </p>
+            </div>
+        </div> <div class="mt-8 bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
+            <h3 class="text-[#4a6572] font-bold text-lg mb-8 italic text-center uppercase tracking-[0.25em]">Dual-branch Prediction Model Architecture</h3>
+                
+                <div class="w-full bg-[#1e293b] rounded-[2rem] overflow-hidden shadow-lg border border-slate-200 group relative cursor-zoom-in" 
+                    onclick="openImageModal('Dual-branch Prediction Model Architecture.png')">
+                    
+                    <img src="Dual-branch Prediction Model Architecture.png" 
+                        alt="Dual-branch Prediction Model Architecture" 
+                        class="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.05]">
+                    
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
 
-            <div class="bg-white p-10 rounded-[3rem] border border-slate-100 md:col-span-2 shadow-[0_10px_40px_rgba(0,0,0,0.03)]">
-                <h3 class="text-[#4a6572] font-bold text-lg mb-8 italic text-center uppercase tracking-[0.25em]">Architecture Flowchart</h3>
-                <div class="h-[320px] w-full bg-[#fcfdfe] rounded-[2rem] flex items-center justify-center border border-dashed border-[#c9dae0]">
-                    <span class="text-[#7a9bb0] italic uppercase tracking-[0.2em] text-xs font-bold">
-                        Technical Pipeline: Input Data <i class="fas fa-arrow-right mx-3 text-[#a2c4c9]"></i> DWT <i class="fas fa-arrow-right mx-3 text-[#c9dae0]"></i> DLinear <i class="fas fa-arrow-right mx-3 text-[#cbd5e1]"></i> Fusion Output
-                    </span>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p class="text-[11px] text-white/90 uppercase tracking-[0.2em] font-black text-center">
+                            Click to Enlarge
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div class="md:col-span-2 mt-8 bg-white p-10 rounded-[3rem] border border-slate-100 flex flex-col md:flex-row items-center justify-between shadow-[0_15px_50px_rgba(162,196,201,0.1)]">
+            <div id="imageModal" class="fixed inset-0 z-[999] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out" onclick="closeImageModal()">
+                <img id="modalImg" src="" class="max-w-[95%] max-h-[95%] rounded-lg shadow-2xl transition-transform duration-300 transform scale-95">
+                <button class="absolute top-10 right-10 text-white text-5xl font-thin hover:text-[#a2c4c9] transition">&times;</button>
+            </div>
+
+            <div class="mt-8 md:col-span-2 bg-white p-10 rounded-[3rem] border border-slate-100 flex flex-col md:flex-row items-center justify-between shadow-[0_15px_50px_rgba(162,196,201,0.1)]">
                 <div class="mb-8 md:mb-0">
                     <div class="flex items-center space-x-4 mb-4">
                         <div class="w-12 h-12 bg-[#eff6f7] rounded-2xl flex items-center justify-center">
@@ -297,7 +343,7 @@
                         <h3 class="text-[#2c3e50] font-black text-2xl uppercase tracking-tighter">Model Source Code</h3>
                     </div>
                     <p class="text-slate-600 text-sm max-w-xl font-medium leading-relaxed">
-                        Download the core implementation of the <b>Dual-branch Prediction Model</b>. Includes Wavelet decomposition layers, DLinear trend modules, and the adaptive fusion weights script.
+                        Download the core implementation of the <b>Dual-branch Prediction Model</b>. Includes T-branch temporal consistency modules, G-branch multi-view causal graph convolutional layers, and the adaptive attention-based fusion weights script.
                     </p>
                 </div>
                 
@@ -313,23 +359,38 @@
 
 <div id="strategy-page" class="page-content bg-slate-50 min-h-screen px-10 py-16">
         <div class="max-w-[1400px] mx-auto">
-            <h2 class="text-[#4a6572] text-4xl font-black mb-8 border-l-8 border-[#F4CB7A] pl-6 uppercase">Regional Strategic Reports</h2>
+            <h2 class="text-[#49697B] text-4xl font-black mb-8 border-l-8 border-[#F4BE9A] pl-6 uppercase">Regional Strategic Reports</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <script>
-                    const nations = ["China", "Russia", "Brazil", "India", "Nigeria", "Argentina", "Japan", "Germany", "France", "Australia", "Ukraine"];
-                    nations.forEach(n => {
-                        document.write(`
-                            <div id="strategy-${n}" class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition border-2 border-transparent hover:border-[#a2c4c9]">
-                                <div class="flex justify-between items-center mb-4">
-                                    <span class="text-xs font-bold text-[#7a9bb0] bg-[#f0f4f8] px-3 py-1 rounded-full uppercase">${n} Report</span>
-                                    <span class="text-[10px] text-gray-400 italic">Cycle: 2026.Q1</span>
+                    const nations = [
+                        "Australia", "Afghanistan", "Canada", "Chile", "Germany", "Italy", "Nigeria", "Uganda",
+                        "Ukraine", "Uzbekistan", "Azerbaijan", "Austria", "Bahrain", "Bangladesh", "Barbados",
+                        "Belarus", "Belgium", "Belize", "Brazil", "Bulgaria", "Burkina Faso", "Burundi",
+                        "Cambodia", "Cameroon", "Chad", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus",
+                        "Czech Republic", "Denmark", "Djibouti", "Dominican Republic", "Ecuador", "Egypt",
+                        "El Salvador", "Ethiopia", "Fiji", "France", "Georgia", "Ghana", "Greece", "Guatemala",
+                        "Guinea", "Guyana", "Honduras", "India", "Iraq", "Israel", "Jamaica", "Japan",
+                        "Kazakhstan", "Kenya", "Kuwait", "Malaysia", "Maldives", "Mali", "Malta", "Mauritius",
+                        "Mexico", "Mozambique", "Myanmar", "Netherlands", "New Zealand", "Norway", "Nicaragua",
+                        "Oman", "Paraguay", "Peru", "Poland", "Portugal", "Romania", "Russia", "Saudi Arabia",
+                        "Serbia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sweden", "Switzerland",
+                        "Tajikistan", "Tanzania", "Thailand", "Togo", "Tunisia", "United Arab Emirates",
+                        "United Kingdom", "United States", "Uruguay", "Vietnam", "Zambia"
+                    ];
+// 核心改动：在 forEach 前面加一个 .sort()
+                        nations.sort().forEach(n => {
+                            document.write(`
+                                <div id="strategy-${n}" class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition border-2 border-transparent hover:border-[#7A9BB0]">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <span class="text-xs font-bold text-[#7a9bb0] bg-[#f0f4f8] px-3 py-1 rounded-full uppercase">${n} Report</span>
+                                        <span class="text-[12px] text-gray-400 italic">Cycle: 2026.Q1</span>
+                                    </div>
+                                    <h4 class="text-lg font-black text-[#4a6572] mb-3 underline decoration-[#c9dae0] underline-offset-4">${n}</h4>
+                                    <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on Dual-branch Prediction Model projections, inflation in ${n} is driven by specific multi-view feature correlations.</p>
+                                    <button onclick="showCountryDetail('${n}');" class="w-full bg-[#7A9BB0] text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-[#7A9BB0] transition">View Analysis</button>
                                 </div>
-                                <h4 class="text-lg font-black text-[#4a6572] mb-3 underline decoration-[#c9dae0] underline-offset-4">${n}</h4>
-                                <p class="text-gray-500 text-xs leading-relaxed mb-6">Based on Dual-branch Prediction Model projections, inflation in ${n} is driven by specific multi-view feature correlations.</p>
-                                <button onclick="showCountryDetail('${n}')" class="w-full bg-[#99b6b4] text-white py-3 rounded-xl font-bold text-xs uppercase hover:bg-[#a2c4c9] transition">View Analysis</button>
-                            </div>
-                        `);
-                    });
+                            `);
+                        });
                 </script>
             </div>
         </div>
@@ -342,23 +403,26 @@
         </button>
         <div class="text-right">
             <h2 class="text-7xl font-black uppercase tracking-tighter text-[#2c3e50]" id="det-name">Country</h2>
-            <p class="text-[#a2c4c9] text-[10px] tracking-[0.3em] font-bold uppercase">Detailed Risk Assessment 2026</p>
+            <p class="text-[#a2c4c9] text-[12px] tracking-[0.3em] font-bold uppercase">Detailed Risk Assessment 2026</p>
         </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch"> 
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch min-h-[78vh]">
     
     <div class="lg:col-span-3 flex flex-col gap-4">
         <div class="bg-white border border-[#f2d5d5]/30 p-5 rounded-[1.5rem] shadow-sm">
-            <p class="text-gray-400 text-[10px] uppercase font-black mb-2 tracking-widest">AWLM Forecast</p>
+            <p class="text-gray-400 text-[12px] uppercase font-black mb-2 tracking-widest">AWLM Forecast</p>
             <div class="text-5xl font-black text-[#e6ccb3] mb-1" id="det-infl" style="background: linear-gradient(to right, #4a6572, #7a9bb0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">>0.0%</div>
             <div id="det-change" class="text-[12px] font-bold uppercase tracking-tight">0.0%</div>
         </div>
 
         <div class="bg-white border border-slate-100 p-5 rounded-[1.5rem] flex-1 flex flex-col shadow-sm">
-            <p class="text-gray-400 text-[10px] uppercase font-black mb-3 tracking-widest">Country Profile</p>
-            <div id="det-profile-content" class="flex-1 text-[#64748b]"></div>
-            <div class="mt-4 pt-4 border-t border-slate-50" id="det-weights-list"></div>
+            <p class="text-gray-400 text-[12px] uppercase font-black mb-3 tracking-widest">Country Profile</p>
+            
+            <div id="det-profile-content" class="flex-1 flex flex-col text-[#64748b]">
+                </div>
+
+            <div id="det-weights-list" class="hidden"></div>
         </div>
 
         <div id="det-status-card" class="py-4 px-6 rounded-[1.5rem] border border-slate-100 flex flex-col items-center justify-center text-center bg-white shadow-sm">
@@ -368,11 +432,11 @@
     </div>
 
     <div class="lg:col-span-6 flex flex-col gap-4">
-        <div class="bg-white border border-[#c9dae0]/50 rounded-[2rem] p-5 h-[310px] shadow-sm">
+        <div class="bg-white border border-[#c9dae0]/50 rounded-[2rem] p-5 h-[310px] shadow-sm flex-1 flex flex-col">
             <h3 class="text-[14px] font-black uppercase mb-3 text-[#7a9bb0] italic">Pearson Correlation</h3>
             <div id="pearsonChart" class="h-full w-full"></div>
         </div>
-        <div class="bg-white border border-[#a2c4c9]/30 rounded-[2rem] p-5 h-[310px] shadow-sm">
+        <div class="bg-white border border-[#a2c4c9]/30 rounded-[2rem] p-5 h-[310px] shadow-sm flex-1 flex flex-col">
             <h3 class="text-[14px] font-black uppercase mb-3 text-[#EEBF79] italic">SHAP Feature Importance</h3>
             <div id="shapChart" class="h-full w-full"></div>
         </div>
@@ -384,17 +448,18 @@
                 <h4 class="text-[11px] font-black uppercase tracking-widest text-[#7a9bb0] border-l-2 border-[#a2c4c9] pl-3 mb-6">Characteristics</h4>
                 <div id="det-analysis-content" class="space-y-6 text-[#64748b]"></div>
             </div>
-            <button class="w-full py-4 bg-[#334e5c] text-white rounded-xl font-black text-[12px] uppercase hover:bg-[#1e293b] transition-all mt-6 shadow-md">
-                Export Analysis Reports
+            
+            <button id="export-pdf-btn" class="w-full py-4 bg-[#7A9BB0] text-white rounded-xl font-black text-[12px] uppercase hover:bg-[#64849a] transition-all mt-6 shadow-md">
+                <i class="fas fa-file-pdf mr-2"></i> EXPORT ANALYSIS REPORTS
             </button>
         </div>
     </div>
 </div>
 </div>
 <div id="database-page" class="page-content bg-[#fdfdfd] min-h-screen">
-        <div class="bg-[#c9dae0] text-[#4a6572] px-10 py-12 border-b border-white/50">
+        <div class="bg-[#EDF8FF] text-[#4C7A9C] px-10 py-12 border-b border-white/50">
             <h2 class="text-3xl font-black uppercase tracking-tighter">Raw Data Terminal</h2>
-            <p class="text-[#7a9bb0] text-xs mt-2 uppercase tracking-widest font-bold">Access 93 Nations Historical & Forecast datasets</p>
+            <p class="text-[#91BAD0] text-xs mt-2 uppercase tracking-widest font-bold">Access 93 Nations Historical & Forecast datasets</p>
         </div>
         <div class="px-10 py-12">
             <div class="overflow-x-auto rounded-3xl border border-slate-100 shadow-sm bg-white">
@@ -432,31 +497,67 @@
 
 <script>
     // 页面切换核心脚本
-    function showPage(pageId) {
-        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
-        const target = document.getElementById(pageId + '-page');
-        if(target) target.classList.add('active-page');
-        window.scrollTo(0, 0);
-        if(pageId === 'home') {
-            setTimeout(() => { if(mapChart) mapChart.resize(); }, 10);
-        }
-    }
+function showPage(pageId) {
+    // 1. 移除所有页面的 active-page 类
+    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
     
-    // 跳转至 Strategy 页面并高亮
-    function jumpToStrategy(countryName) {
-        showPage('strategy');
+    // 2. 匹配 ID (例如输入 'database' 匹配 'database-page')
+    const target = document.getElementById(pageId + '-page');
+    if (target) {
+        target.classList.add('active-page');
+        
+        // --- 新增优化逻辑 ---
+        
+        // A. 自动回到顶部
+        window.scrollTo(0, 0);
+
+        // B. 针对 ECharts 的特殊处理：如果切回首页，强制地图重绘
+        if (pageId === 'home' && window.mapChart) {
+            setTimeout(() => { window.mapChart.resize(); }, 100);
+        }
+
+        // C. 针对详情页的特殊处理：如果切到详情页，确保图表不扁
+        if (pageId === 'country-detail') {
+            // 这里可以放详情页专用的重绘逻辑，防止图表加载不全
+            setTimeout(() => {
+                if (window.pChart) window.pChart.resize();
+                if (window.sChart) window.sChart.resize();
+            }, 100);
+        }
+    } else {
+        console.error("Page not found: " + pageId + "-page");
+    }
+}
+
+    function jumpToDatabase(countryName) {
+        // 1. 切换页面
+        showPage('database');
+        
         setTimeout(() => {
-            const element = document.getElementById('strategy-' + countryName);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                element.style.borderColor = "#fca311";
-                element.style.boxShadow = "0 25px 50px -12px rgba(0, 0, 0, 0.25)";
+            // 2. 修正查找范围，确保能搜到生成的表格行
+            const tableRows = document.querySelectorAll('#database-page tbody tr');
+            let targetRow = null;
+            
+            for (let row of tableRows) {
+                // 查找每一行中是否包含国家名字（不仅仅是第一列，增加鲁棒性）
+                if (row.innerText.includes(countryName)) {
+                    targetRow = row;
+                    break;
+                }
+            }
+
+            if (targetRow) {
+                targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetRow.style.transition = 'all 0.3s ease';
+                targetRow.style.backgroundColor = '#fef3c7'; 
+                targetRow.style.boxShadow = 'inset 0 0 0 2px #7A9BB0'; // 改用你的莫兰迪蓝高亮
+                
                 setTimeout(() => {
-                    element.style.borderColor = "transparent";
-                    element.style.boxShadow = "";
+                    targetRow.style.backgroundColor = '';
+                    targetRow.style.boxShadow = '';
                 }, 2000);
             }
-        }, 300);
+        }, 200); // 稍微加长延迟，确保页面渲染完毕
     }
 
     // 跳转至 Database 页面并高亮
@@ -500,9 +601,7 @@
             }
         }, 100); // 稍微延迟以确保页面已切换完成
     }
-    // --- 核心 JavaScript 逻辑开始：插入在 jumpToDatabase 之后 ---
 
-    // 1. 专项国家数据 (数据源自你提供的 CSV 与 SHAP 瀑布图)
 // 1. 扩展专项国家数据：包含风险等级和深度分析特点
 const countryDetailData = {
     "Ukraine": {
@@ -628,13 +727,25 @@ function showCountryDetail(name) {
     const profileBox = document.getElementById('det-profile-content');
     if (profileBox && data.profile) {
         profileBox.innerHTML = `
-            <div class="mb-1 text-left"> 
-                <p class="text-[11px] text-slate-500 uppercase font-black mb-0.5">Region / Status</p>
-                <p class="text-[15px] font-bold text-slate-900 uppercase leading-tight">${data.profile.region} — ${data.profile.status}</p>
+            <div class="mb-3">
+                <p class="text-[12px] text-slate-400 uppercase font-black mb-0.5">Region / Status</p>
+                <p class="text-[14px] font-bold text-slate-800 uppercase leading-tight">${data.profile.region} — ${data.profile.status}</p>
             </div>
-            <div class="flex-1 text-left mt-4"> 
-                <p class="text-[11px] text-slate-500 uppercase font-black mb-1">Strategic Context</p>
-                <p class="text-[15px] text-slate-800 leading-[1.8] font-medium">${data.profile.bio}</p>
+
+            <div class="mb-4 text-[13px] leading-relaxed text-slate-600 font-medium">
+                <p class="text-[14px] text-slate-400 uppercase font-black mb-1">Strategic Context</p>
+                ${data.profile.bio}
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mt-auto pt-4 border-t border-slate-100">
+                <div class="border-l-2 border-[#a2c4c9] pl-3">
+                    <p class="text-[12px] text-slate-400 uppercase font-black tracking-widest mb-0.5">Accuracy</p>
+                    <p class="text-[16px] font-black text-[#4a6572] italic">${data.confidence || '94.2%'}</p>
+                </div>
+                <div class="border-l-2 border-[#dce7af] pl-3">
+                    <p class="text-[12px] text-slate-400 uppercase font-black tracking-widest mb-0.5">Lead Time</p>
+                    <p class="text-[16px] font-black text-[#4a6572] italic">${data.leadTime || '3 Months'}</p>
+                </div>
             </div>
         `;
     }
@@ -646,7 +757,7 @@ function showCountryDetail(name) {
         metricsBox.innerHTML = `
         <div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-2 mt-1 text-left">
             <div>
-                <p class="text-[10px] text-white/30 uppercase font-black">Accuracy</p>
+                <p class="text-[12px] text-white/30 uppercase font-black">Accuracy</p>
                 <p class="text-sm font-black text-white italic">${data.confidence}</p>
             </div>`;
     }
@@ -684,18 +795,45 @@ function showCountryDetail(name) {
     const analysisBox = document.getElementById('det-analysis-content');
     if (analysisBox && data.analysis) {
         analysisBox.innerHTML = data.analysis.map(item => `
-            <div class="border-b border-slate-200 pb-3 last:border-0 text-left">
-                <p class="text-[11px] font-black text-slate-500 uppercase mb-1 tracking-widest">${item.label}</p>
-                <p class="text-[17px] font-bold text-slate-900 mb-1 underline decoration-slate-300 decoration-2 underline-offset-2">${item.value}</p>
-                <p class="text-[14px] text-slate-700 leading-relaxed font-normal">${item.desc}</p>
+            <div class="flex-1 flex flex-col justify-center border-b border-slate-100 last:border-0 py-4"> 
+                <p class="text-[12px] font-black text-slate-400 uppercase mb-1 tracking-widest">${item.label}</p>
+                <p class="text-[16px] font-bold text-slate-900 mb-1 underline decoration-slate-200 decoration-2 underline-offset-4">${item.value}</p>
+                <p class="text-[13px] text-slate-600 leading-relaxed">${item.desc}</p>
             </div>
         `).join('');
     }
 
     // F. 绘图（修复了此处原本导致黑屏的 renderDetailCharts 函数名冲突）
     renderDetailCharts(data);
+    const exportBtn = document.getElementById('export-pdf-btn');
+    if (exportBtn) {
+        // 解绑之前的可能存在的事件，重新绑定当前国家的下载逻辑
+        exportBtn.onclick = function() {
+            downloadPDF(name); // 这里的 name 是当前详情页的国家
+        };
+    }
 }
 
+function downloadPDF(countryName) {
+    // 1. 定义路径（确保文件名和你的文件夹路径完全一致）
+    const fileName = `${countryName}_Report.pdf`;
+    const filePath = `PDFs/${fileName}`; 
+
+    // 2. 在新窗口打开 PDF 进行预览
+    // 浏览器识别到 .pdf 后缀会自动开启预览模式
+    const previewWindow = window.open(filePath, '_blank');
+
+    // 3. 安全检查（防止部分浏览器拦截弹窗）
+    if (!previewWindow || previewWindow.closed || typeof previewWindow.closed == 'undefined') {
+        // 如果被浏览器拦截了（比如 Safari 默认拦截弹窗），则降级为直接下载
+        const link = document.createElement('a');
+        link.href = filePath;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
 // 4. 绘图函数
 function renderDetailCharts(data) {
     const pChart = echarts.init(document.getElementById('pearsonChart'));
@@ -758,16 +896,19 @@ function renderDetailCharts(data) {
 }
     // --- 核心 JavaScript 逻辑结束 ---
     const dataNations = [
-        "Afghanistan", "Australia", "Austria", "Azerbaijan", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
-        "Brazil", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Chad", "Chile", "China",
-        "Colombia", "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Djibouti", "Dominican Republic", "Ecuador", "El Salvador", "Ethiopia",
-        "Fiji", "Georgia", "Germany", "Ghana", "Guatemala", "Guinea", "Guyana", "Honduras", "India", "Iraq",
-        "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kyrgyzstan", "Laos",
-        "Latvia", "Lebanon", "Lithuania", "Luxembourg", "Malawi", "Malaysia", "Mali", "Mauritania", "Mauritius", "Mexico",
-        "Moldova", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "New Zealand", "Nicaragua",
-        "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Panama", "Paraguay", "Peru", "Philippines",
-        "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saudi Arabia", "Senegal", "Serbia", "Sierra Leone",
-        "Singapore", "Slovakia", "Slovenia","United States"
+    "Australia", "Afghanistan", "Canada", "Chile", "Germany", "Italy", "Nigeria", "Uganda",
+    "Ukraine", "Uzbekistan", "Azerbaijan", "Austria", "Bahrain", "Bangladesh", "Barbados",
+    "Belarus", "Belgium", "Belize", "Brazil", "Bulgaria", "Burkina Faso", "Burundi",
+    "Cambodia", "Cameroon", "Chad", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus",
+    "Czech Republic", "Denmark", "Djibouti", "Dominican Republic", "Ecuador", "Egypt",
+    "El Salvador", "Ethiopia", "Fiji", "France", "Georgia", "Ghana", "Greece", "Guatemala",
+    "Guinea", "Guyana", "Honduras", "India", "Iraq", "Israel", "Jamaica", "Japan",
+    "Kazakhstan", "Kenya", "Kuwait", "Malaysia", "Maldives", "Mali", "Malta", "Mauritius",
+    "Mexico", "Mozambique", "Myanmar", "Netherlands", "New Zealand", "Norway", "Nicaragua",
+    "Oman", "Paraguay", "Peru", "Poland", "Portugal", "Romania", "Russia", "Saudi Arabia",
+    "Serbia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sweden", "Switzerland",
+    "Tajikistan", "Tanzania", "Thailand", "Togo", "Tunisia", "United Arab Emirates",
+    "United Kingdom", "United States", "Uruguay", "Vietnam", "Zambia"
     ];
 
     const allWorldCountries = [
@@ -802,7 +943,7 @@ function renderDetailCharts(data) {
 
     let mapChart;
     document.addEventListener('DOMContentLoaded', function() {
-        mapChart = echarts.init(document.getElementById('awlmMap'));
+        mapChart = echarts.init(document.getElementById('awlmMap'), null, { renderer: 'svg' });
         
         // 1. 地图初始化
         mapChart.setOption({
@@ -812,26 +953,26 @@ function renderDetailCharts(data) {
                     if (isNaN(params.value)) return `<div style="padding:4px">${params.name}: No Data</div>`;
                     return `
                         <div style="padding:4px; line-height:1.5;">
-                            <div style="font-weight:900; color:#fca311; margin-bottom:2px; text-transform:uppercase;">${params.name}</div>
+                            <div style="font-weight:900; color:#FFEAC8; margin-bottom:2px; text-transform:uppercase;">${params.name}</div>
                             <div style="font-size:12px; font-weight:bold;">Food Inflation: ${params.value}%</div>
                         </div>
                     `;
                 },
-                backgroundColor: 'rgba(51, 78, 92, 0.9)', 
+                backgroundColor: 'rgba(51, 78, 92, 0.85)', 
                 borderColor: 'rgba(255, 255, 255, 0.1)',
                 borderWidth: 1,
                 textStyle: { color: '#f8fafc', fontSize: 12 },
-                extraCssText: 'backdrop-filter: blur(4px); border-radius: 8px;'
+                extraCssText: 'backdrop-filter: blur(6px); border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);'
             },
-            visualMap: { show: false, min: 0, max: 30, inRange: { color: ['#e0f2f1', '#a2c4c9', '#e6ccb3', '#f2d5d5', '#d4a3a3']  } },
+            visualMap: { show: false, min: 0, max: 30, inRange: { color: ['#B2D8E5', '#7A9BB0', '#5E819D', '#CA706E']  } },
             series: [{
                 type: 'map', map: 'world', roam: true, zoom: 1.2,
-                itemStyle: { areaColor: '#FFFFFF', borderColor: '#e2e8f0', borderWidth: 0.5 },
+                itemStyle: { areaColor: '#FFFFFF', borderColor: '#C2D1DC', borderWidth: 0.5 },
                 label: { show: false },
-                emphasis: { label: { show: false }, itemStyle: { areaColor: '#FEE2B7' } },
-                select: { label: { show: false }, itemStyle: { areaColor: '#FEE2B7' } },
+                emphasis: { label: { show: false }, itemStyle: { areaColor: '#FFF7DA' ,borderColor: '#B8CAD6',borderWidth: 0.5,shadowBlur: 5,shadowColor: 'rgba(254, 243, 199, 0.5)'} },
+                select: { label: { show: false }, itemStyle: { areaColor: '#fef3c7' } },
                 data: dataNations.map(name => {
-                    let val = (Math.random() * 20).toFixed(1);
+                    let val = (Math.random() * 30).toFixed(1);
                     return { name: name, value: val };
                 })
             }]
@@ -868,7 +1009,7 @@ function renderDetailCharts(data) {
                         item.className = 'flex justify-between items-center p-3 hover:bg-[#f8fafc] cursor-pointer transition-colors border-b border-slate-50 last:border-0';
                         item.innerHTML = `
                             <span class="font-bold text-[#4a6572] text-sm">${country}</span>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                            <span class="px-2 py-0.5 rounded-full text-[12px] font-black uppercase tracking-wider ${
                                 isData 
                                 ? 'bg-[#d5e9dc] text-[#333f29]' // 莫兰迪绿 (有数据)
                                 : 'bg-[#f2d5d5] text-[#b56576]'// 浅灰色 (无数据)
@@ -925,8 +1066,8 @@ function renderDetailCharts(data) {
             row.innerHTML = `
                 <div id="${chartId}" class="mini-chart"></div>
                 <div class="flex-1 ml-4 pr-2 cursor-pointer" onclick="jumpToDatabase('${name}')">
-                    <p class="text-[10px] font-black text-blue-950 uppercase hover:text-yellow-600 transition">${name}</p>
-                    <p class="text-[9px] text-gray-500 leading-tight">Click to view raw dataset.</p>
+                    <p class="text-[12px] font-black text-blue-950 uppercase hover:text-yellow-600 transition">${name}</p>
+                    <p class="text-[11px] text-gray-500 leading-tight">Click to view raw dataset.</p>
                 </div>
             `;
             listContainer.appendChild(row);
@@ -959,12 +1100,113 @@ function renderDetailCharts(data) {
         }
         requestAnimationFrame(scrollStep);
 
-        // 6. 趋势图初始化
+ // 6. 全球风险动量流转 (桑基图) - 布局优化版
         const trendChart = echarts.init(document.getElementById('trendChart'));
+
+        const stats = { Stable: 31, Warning: 39, Critical: 23 }; 
+
         trendChart.setOption({
-            xAxis: { type: 'category', data: ['Jan','Feb','Mar'], axisLabel: { fontWeight: 'bold' } },
-            yAxis: { type: 'value' },
-            series: [{ data: [12.5, 19.2, 14.8], type: 'line', smooth: true, color: '#81a4a9', lineStyle: { width: 4 } }]
+            tooltip: {
+                trigger: 'item',
+                backgroundColor: 'rgba(51, 78, 92, 0.9)',
+                textStyle: { color: '#f8fafc', fontSize: 12 }
+            },
+            // 将解释文字拆分为两排，并固定在底部
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    bottom: 30, // 第一排位置
+                    style: {
+                        text: 'Note: Flow width represents the number of nations transitioning between',
+                        fill: '#94a3b8',
+                        fontSize: 10,
+                        fontWeight: 'bold',
+                        fontFamily: 'Inter'
+                    }
+                },
+                {
+                    type: 'text',
+                    left: 'center',
+                    bottom: 12, // 第二排位置
+                    style: {
+                        text: 'regional origins and 2-month forecast risk states.',
+                        fill: '#94a3b8',
+                        fontSize: 10,
+                        fontWeight: 'bold',
+                        fontFamily: 'Inter'
+                    }
+                }
+            ],
+            series: {
+                type: 'sankey',
+                layout: 'none',
+                // --- 核心调整：往上移动并加大 ---
+                top: '2%',       // 原为 10%，减小间距即往上移
+                bottom: '18%',   // 为底部两排文字留出足够空间
+                left: '2%',
+                right: '15%',    // 稍微增加右侧间距，防止数量文字溢出
+                // ------------------------------
+                nodeGap: 5,
+                nodeWidth: 20,   // 增加节点宽度，让图看起来更敦实、更有体量感
+                focusNodeAdjacency: 'allEdges',
+                data: [
+                    { name: 'Asia', itemStyle: { color: '#AEC8CA' } },
+                    { name: 'Africa', itemStyle: { color: '#D4A3A3' } },
+                    { name: 'Europe', itemStyle: { color: '#C9DAE0' } },
+                    { name: 'North America', itemStyle: { color: '#B5C4B1' } },
+                    { name: 'South America', itemStyle: { color: '#E6CCB3' } },
+                    { name: 'Oceania', itemStyle: { color: '#769AB8' } },
+                    { 
+                        name: 'Stable', 
+                        itemStyle: { color: '#a2c4c9' },
+                        label: { formatter: '{b}\n{c|' + stats.Stable + ' Nations}' } 
+                    },
+                    { 
+                        name: 'Warning', 
+                        itemStyle: { color: '#F4BE9A' },
+                        label: { formatter: '{b}\n{w|' + stats.Warning + ' Nations}' }
+                    },
+                    { 
+                        name: 'Critical', 
+                        itemStyle: { color: '#CA706E' },
+                        label: { formatter: '{b}\n{r|' + stats.Critical + ' Nations}' }
+                    }
+                ],
+                links: [
+                    { source: 'Asia', target: 'Stable', value: 8 },
+                    { source: 'Asia', target: 'Warning', value: 12 },
+                    { source: 'Asia', target: 'Critical', value: 5 },
+                    { source: 'Africa', target: 'Stable', value: 3 },
+                    { source: 'Africa', target: 'Warning', value: 15 },
+                    { source: 'Africa', target: 'Critical', value: 14 },
+                    { source: 'Europe', target: 'Stable', value: 12 },
+                    { source: 'Europe', target: 'Warning', value: 6 },
+                    { source: 'Europe', target: 'Critical', value: 2 },
+                    { source: 'North America', target: 'Stable', value: 5 },
+                    { source: 'North America', target: 'Warning', value: 2 },
+                    { source: 'South America', target: 'Stable', value: 2 },
+                    { source: 'South America', target: 'Warning', value: 4 },
+                    { source: 'South America', target: 'Critical', value: 2 },
+                    { source: 'Oceania', target: 'Stable', value: 1 }
+                ],
+                label: {
+                    position: 'right',
+                    color: '#4a6572',
+                    fontWeight: '900',
+                    fontSize: 12,
+                    rich: {
+                        c: { fontSize: 10, color: '#a2c4c9', fontWeight: 'bold', lineHeight: 18 },
+                        w: { fontSize: 10, color: '#F4BE9A', fontWeight: 'bold', lineHeight: 18 },
+                        r: { fontSize: 10, color: '#CA706E', fontWeight: 'bold', lineHeight: 18 }
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    curveness: 0.5,
+                    opacity: 0.35
+                }
+            }
         });
 
         window.onclick = (e) => { 
@@ -979,6 +1221,32 @@ function renderDetailCharts(data) {
             if(trendChart) trendChart.resize();
         });
     });
+
+            // 打开大图弹窗
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = src;
+            modal.classList.remove('hidden');
+            // 弹窗出现时，稍微延迟增加一个缩放动画效果
+            setTimeout(() => {
+                modalImg.classList.remove('scale-95');
+                modalImg.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // 禁用页面滚动
+        }
+
+        // 关闭大图弹窗
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.classList.remove('scale-100');
+            modalImg.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // 恢复页面滚动
+            }, 200);
+        }
 </script>
 </body>
 </html>
